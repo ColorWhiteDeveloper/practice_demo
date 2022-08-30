@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        const person = {
+            name:'李四',
+            age:14,
+            id:undefined,
+            gender:function (){
+                if(Number('028213')%2===0){
+                    return '男';
+                }else{
+                    return '女';
+                }
+            },
+            child:[
+                {
+                    name:'李五',
+                    age:2,
+                    id:'028212',
+                    gender:function(){
+                        if(Number('028212')%2===0){
+                            return '男';
+                        }else{
+                            return '女';
+                        }
+                    },
+                    birth:new Date(1536627600000)
+                }
+            ],
+            birth:new Date(1536627600000)
+        }
+        // 使用json.stringfy拷贝
+        const copy_person = JSON.parse(JSON.stringify(person));
+        const res_arr = [];
+        function assignObject(new_arr,obj){
+            for(let key in obj){
+                if(obj[key] instanceof Array){
+                    new_arr[key] = [];
+                    assignObject(new_arr[key],obj[key]);
+                }else if(typeof obj[key]==="function"){
+                    new_arr[key] = obj[key];
+                }else if(obj[key] instanceof Object){
+                    new_arr[key] = {};
+                    assignObject(new_arr[key],obj[key]);
+                }else{
+                    new_arr[key] = obj[key];
+                }
+            }
+        }
+        assignObject(res_arr,person);
+        console.log({...res_arr});
+    </script>
+</body>
+</html>

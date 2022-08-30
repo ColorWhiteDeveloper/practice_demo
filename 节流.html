@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <main>
+        <div class="box">按钮</div>
+    </main>
+    <style>
+        .box{
+            width: 100px;
+            height: 20px;
+            background-color: red;
+        }
+    </style>
+    <script>
+        const box = document.querySelector(".box");
+        box.addEventListener("click",throttled(function(){
+            console.log("点击成功");
+        },4000))
+        function throttled (fn,delay){
+            let timer = null;
+            return (...arg)=>{
+                if(timer==null){
+                    timer = setTimeout(()=>{
+                        fn(arg);
+                        clearTimeout(timer);
+                        timer = null;
+                    },delay);
+                }
+            }
+        }
+    </script>
+</body>
+</html>

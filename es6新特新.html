@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 向对象添加属性
+            // const user = {
+            //     id:1,
+            //     name:'222'
+            // }
+            // const userWithPass={
+            //     ...user,
+            //     age:12,
+            // }
+            // console.log(user,userWithPass);
+        // 合并对象
+            // const part1 = { id:10,name:"张三" };
+            // const part2 = { id:11,pwd:'123456'};
+            // const partAll = {...part1,...part2};
+            // console.log(partAll);
+        // 删除对象属性
+            // const user = {id:1,name:"222"};
+            // const new_user = ({name,...rest})=>rest;
+            // console.log(new_user(user));
+        // 动态删除属性
+            // let key = "name";
+            // const user = { id:100,name:'222',pwd:"123456"};
+            // const removeProperty = (prop)=>(({[prop]:_,...rest})=>rest);
+            // const new_user = removeProperty(key)(user);
+            // console.log(new_user);
+                // 下划线的作用
+                // const arr = [1,2,3];
+                // const new_arr = arr.filter((_,idx)=>idx>0);
+                // console.log(new_arr);
+        // 调整对象属性的位置
+            // const user = { name:"222",id:1,age:20};
+            // const new_user = {id:null,age:null,...user};
+            // console.log(new_user);
+        // 默认属性
+            // const user = { id:1,name:"222"},user2 = {id:2,name:"333",quotes:["dasdasdasdasdsadasdasd"]};
+            // const setDefaults = ({ quotes = [],...rest})=>({...rest,quotes});
+            // console.log(setDefaults(user));
+            // console.log(setDefaults(user2));
+        // 重命名对象的属性
+            // const user = {ID:200,Name:"12"};
+            // const new_user = ({ID,...rest})=>({Id:ID,...rest});
+            // console.log(new_user(user));
+        // 条件属性
+            const user = {id:100,name:'1001'},pwd='pwd';
+            const userWithPwd = {...user,...(pwd && {pwd})};
+            console.log({...(pwd && {pwd})});
+    </script>
+</body>
+</html>

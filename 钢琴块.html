@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #box{
+            display: flex;
+        }
+        .heibox,.baibox{
+            width: 20px;
+            height: 100px;
+            border: 1px solid #ccc;
+            line-height: 100px;
+            text-align: center;
+        }
+        .heibox{
+            background-color: #000;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <div id="box"></div>
+    </main>
+    <script>
+        const list = [
+            {
+                label:1,
+                checked:false,
+            },
+            {
+                label:2,
+                checked:false,
+            },
+            {
+                label:3,
+                checked:false,
+            },
+            {
+                label:4,
+                checked:false,
+            },
+            {
+                label:5,
+                checked:false,
+            }
+        ]
+        render(list);
+        function render(arr){
+            const box = document.querySelector('#box');
+            arr.forEach((element,index) => {
+                const divbox = document.createElement('div');
+                divbox.innerHTML = element.label;
+                if((index+1)%2===0){
+                    divbox.classList.add('heibox');
+                }else{
+                    divbox.classList.add('baibox');
+                }
+                divbox.addEventListener('click',output);
+                box.appendChild(divbox);
+            });
+        }
+        function output(el){
+            console.log(el.target.innerHTML);
+        }
+</script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script type="text/javascript">
+        test(3);
+        function test(height) {
+            let last_line_stars = height * 2 - 1;
+            let tree = [];
+            for (let i = 1; i <= height; i++) {
+                let str = "";
+                let space = Math.floor((last_line_stars - (i * 2 - 1)) / 2);
+                for (let l = 0; l < space; l++) {
+                    str += " ";
+                }
+                for (let j = 0; j < i * 2 - 1; j++) {
+                    str += "*";
+                }
+                for (let r = 0; r < space; r++) {
+                    str += " ";
+                }
+                tree[i] = str;
+            }
+            console.log(tree.join('\n'));
+        }
+    </script>
+</body>
+
+</html>

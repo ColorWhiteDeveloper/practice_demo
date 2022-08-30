@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const _shouldUpdate = (oldVersion, newVersion) => {
+            // 补全代码
+            if (oldVersion === newVersion) {
+                return false;
+            }
+            const rep = /[0-9]/;
+            for(let i=0;i<oldVersion.length;i++){
+                if(oldVersion[i]!=="."){
+                    if(!(rep.test(oldVersion[i])&&rep.test(newVersion[i]))){
+                        return false;
+                    }
+                    if(oldVersion[i]<newVersion[i]){
+                        return true;
+                    }
+                }
+            }
+            return false;
+            // const oldArr = oldVersion.split(".");
+            // const newArr = newVersion.split(".");
+            // const rep = /[0-9]/;
+            // let count = 0;
+            // for(let i=0;i<oldArr.length;i++){
+            //     if(!(rep.test(oldArr[i]) && rep.test(newArr[i]))){
+            //         return false;
+            //     }
+            //     if(oldArr[i]<newArr[i]){
+            //         count++;
+            //     }
+            // }
+            // if(count===0){
+            //     return false;
+            // }else{
+            //     return true;
+            // }
+
+        }
+        console.log(_shouldUpdate("1.2.3","1.2.4"));
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,67 @@
+
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <style>
+            main{
+                display: flex;
+                width: 100%;
+                justify-content: center;
+            }
+            #edit-box{
+                border: 1px solid #ccc;
+                border-radius: 20px;
+                width: 200px;
+                height: 25px;
+                line-height: 25px;
+                padding-left: 10px;
+                outline:#409eff;
+            }
+            button{
+                border: none;
+                background-color: #409eff;
+                border-radius: 20px;
+                color: #fff;
+                padding: 0 20px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <main>
+            <div id="edit-box" contenteditable="true" oninput="getText(event)"></div>
+            <button onclick="getText()">获取自定义输入框内容</button>
+            <div class="triangle"></div>
+        </main>
+    </body>
+    <script>
+        function getText(e){
+            console.log(e);
+        }
+        function output(){
+            var triangle = document.querySelector('.triangle');
+            // 补全代码
+            let i =0;
+            let str = "";
+            while(i<3){
+                for(let j=0;j<i+1;j++){
+                    if(j===i){
+                        str +="*"+"<br/>";
+                        break;
+                    }
+                    str +="*"; 
+                }
+                i++;
+            }
+            console.log(str);
+            triangle.innerHTML = str;
+        }
+        output();
+    </script>
+
+    </html>

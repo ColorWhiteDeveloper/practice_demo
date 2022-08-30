@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // function Fnc(){
+        //     this.a =0;
+        //     return {
+        //         a:1,
+        //     }
+        // }
+        // const obj = new Fnc();
+        // Fnc.prototype.b = 0;
+        // console.log(obj.b);
+        // const f = {
+        //     a: 1,
+        //     fnc: function (...arr) {
+        //         console.log(this.a + "," + arr);
+        //     }
+        // }
+        // const obj = {
+        //     a: 0,
+        // }
+        // f.fnc.call(obj, 1, 2, 3);
+        function bindThis(f, oTarget) {
+            return f.bind(oTarget);
+        }
+        console.log(function () { var r = bindThis(function(a, b){return this.test + a + b}, {test: 2})(2, 3); return r === 7; });
+    </script>
+</body>
+
+</html>

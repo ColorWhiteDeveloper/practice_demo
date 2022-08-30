@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const str = '1', num = 1, nul = null, und = undefined, arr = [], flag = true, obj = {};
+        // myTypeOf(arr);//object
+        // myTypeOf(str);//string
+        // myTypeOf(num);//number
+        // myTypeOf(nul);//object
+        // myTypeOf(und);//undefined
+        // myTypeOf(flag);//boolean
+        // myTypeOf(obj);//object
+        // myInstanceOf(str,String);//false
+        // myInstanceOf(num,Number);//false
+        // myInstanceOf(nul,Object);//false
+        // myInstanceOf(und,Object);//false
+        // myInstanceOf(arr,Array);//true
+        // myInstanceOf(flag,Boolean);//false
+        // myInstanceOf(obj,Object);//false
+
+        // function myTypeOf(params){
+        //     console.log(typeof params);
+        // }
+        // function myInstanceOf(params,type){
+        //     console.log(params instanceof type);
+        // }
+        // console.log(typeof(12)==="number");
+        function createModule(str1, str2) {
+            return {
+                greeting: str1,
+                name: str2,
+                sayIt: function () {
+                    console.log(this);
+                    return this.greeting + "，" + this.name;
+                }
+            }
+        }
+        console.log(function () {     var o = createModule('hello', 'matt');     return o.sayIt(); }());
+    </script>
+</body>
+
+</html>

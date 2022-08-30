@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script type="text/javascript">
+        const _delete = (array, index) => {
+            // 补全代码
+            // 自己写的
+            // return array.slice(0, index).concat(array.slice(index+1));
+            // 优质解答
+            return array.filter((item,i)=>i!==index);
+        }
+        console.log(_delete([1,2,3],2));
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="inputComponent">
+        <div class="input" contenteditable="true" tabindex="1"></div>
+        <div class="bqarea" tabindex="1">
+            <span class="bq">😀</span>
+            <span class="bq">😀</span>
+            <span class="bq">😀</span>
+            <span class="bq">😀</span>
+            <span class="bq">😀</span>
+            <span class="bq">😀</span>
+        </div>
+    </div>
+    <style>
+        .input {
+            min-height: 30px;
+            background-color: #ccc;
+            width: 20%;
+            margin: 0 auto;
+            line-height: 30px;
+            outline: none;
+            padding-left: 20px;
+            border-radius: 20px;
+            color: #333;
+            text-align: left;
+            font-size: 16px;
+            overflow: hidden;
+        }
+
+        .input:focus {
+            min-height: 28px;
+            line-height: 28px;
+            background-color: #fff;
+            border-color: #409eff;
+            border-width: 1px;
+            border-style: solid;
+        }
+
+        .bqarea {
+            display: flex;
+            font-size: 25px;
+            width: 20%;
+            margin: 10px auto 0;
+            line-height: 30px;
+            justify-content: space-between;
+        }
+    </style>
+    <script>
+        const bqList = document.querySelectorAll(".bq");
+        // 添加点击事件
+        for (let i = 0; i < bqList.length; i++) {
+            bqList[i].onclick = function () {
+                const input = document.querySelector(".input");
+                input.onfocus;
+                let parser = new DOMParser();
+                input.innerHTML += bqList[i].innerHTML
+            }
+        }
+    </script>
+
+</body>
+
+</html>

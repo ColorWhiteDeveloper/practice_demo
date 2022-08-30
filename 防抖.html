@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <main>
+        <button class="btn1">按钮1</button>
+        <button class="btn2">按钮2</button>
+    </main>
+    <script>
+        const btn1 = document.querySelector(".btn1");
+        const btn2 = document.querySelector(".btn2");
+        btn1.addEventListener('click',debounce(function(){
+            console.log('我是按钮1');
+        },1000))
+        btn2.addEventListener('click',debounce(function(){
+            console.log('我是按钮2');
+        },1000))
+        function debounce(fn,delay){
+            let timer = null;
+            return function(){
+                if(timer) clearTimeout(timer);
+                timer = setTimeout(()=>{
+                    console.log(this)
+                    fn.call(this);
+                },delay)
+            }
+        }
+    </script>
+</body>
+</html>

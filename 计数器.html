@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script type="text/javascript">
+        /*
+            请补全JavaScript代码，要求每次调用函数"closure"时会返回一个新计数器。每当调用某个计数器时会返回一个数字且该数字会累加1。
+            注意：
+            1. 初次调用返回值为1
+            2. 每个计数器所统计的数字是独立的
+        */
+        const closure = () => {
+            // 补全代码
+            // 我的代码
+                // return () => {
+                //     this.count ? this.count++:this.count = 1;
+                //     return this.count;
+                // };
+            // 优质答案
+                // let count = 0
+                // return function() {
+                //     count++
+                //     return count
+                // }
+            // 改良
+                let count = 0;
+                return ()=>{
+                    return ++count;//count++输出的是3;
+                }
+        }
+        function test() { var timer = closure(); timer(); timer(); timer(); return timer() === 4 }
+        console.log(test());
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function getShuiXianHuaNumber(){
+            let i = 100;
+            let bit,ten,hundred;
+            while(i<1000){
+                bit = i%10;
+                ten = (i-bit)/10%10;
+                hundred = (i-ten*10-bit)/100;
+                if(hundred*hundred*hundred+ten*ten*ten+bit*bit*bit==i){
+                    console.log(i);
+                }
+                i++;
+            }
+        }
+        getShuiXianHuaNumber();
+    </script>
+</body>
+</html>

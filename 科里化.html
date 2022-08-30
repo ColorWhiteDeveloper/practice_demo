@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const currying = (fun, _args) => {
+            const length = fun.length;
+            let args = _args || [];
+            return (...res) => {
+                args.push(...res);
+                if (args.length < length) return currying.call(this, fun, args); //判断参数接收情况
+                return fun.apply(this, args);
+            };
+        };
+        add = (a, b, c) => {
+            console.log(a + b + c);
+        };
+        const _add = currying(add);
+        _add(1, 5, 4); //10
+        _add(1)(5, 4); //10
+        // _add(1)(5)(4); //10
+    </script>
+</body>
+
+</html>

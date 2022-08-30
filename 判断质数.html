@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 我的代码
+        // Number.prototype._isPrime = (num) => {
+        //     if (num <= 1) return false;
+        //     const end_index = Math.ceil(Math.sqrt(num));
+        //     for (let i = 2; i <= end_index; i++) {
+        //         if (num % i === 0) return false;
+        //     }
+        //     return true;
+        // }
+        // 优质解答
+        Number.prototype._isPrime = function () {
+            const v = this.valueOf();
+            console.log(v);
+            if (v <= 1 || !Number.isInteger(v)) return false;
+            for (let i = 2, ceil = Math.floor(Math.sqrt(v)); i <= ceil; i += 1) {
+                if (v % i === 0) return false;
+            }
+            return true;
+        }
+        console.log(function() {return (9)._isPrime() === true}());
+    </script>
+</body>
+
+</html>

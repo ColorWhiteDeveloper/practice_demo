@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="jsContainer" class="hello">
+        <ul class="js-test" id="jsParent">
+            <li data-index="0">1</li>
+            <li data-index="1">2</li>
+        </ul>
+        <span style="font-weight: bold;">3</span>
+        4
+    </div>
+    <script>
+        function dom2json() {
+            const dom = document.querySelector("#jsContainer");
+            console.log(dom.childNodes.length);
+            let vdom ={};
+            // 添加标签名
+            vdom.tag = dom.localName;
+            // 获取当前节点属性
+            let props = dom.attributes;
+            // 添加当前属性
+            vdom.attributes =  addProps(props);
+            console.log(vdom);
+            // 设置children;
+            // vdom.children = 
+
+        }
+        dom2json();
+        function addProps(list){
+            const res = {};
+            for(let i=0;i<[...list].length;i++){
+                res[[...list][i].name] = [...list][i].nodeValue;
+            }
+            return res;
+        }
+    </script>
+</body>
+
+</html>
