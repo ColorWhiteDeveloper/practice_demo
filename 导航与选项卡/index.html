@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* nav1导航的样式 */
+        .nav1-container{
+            background-color: rgb(255, 102, 0);
+            padding: 10px 100px;
+        }
+        .nav1{
+            display: flex;
+            justify-content: space-between;
+        }
+        /* 元素本身默认样式 */
+        .nav1-item{
+            padding: 5px 10px;
+            color: white;
+        }
+        /* 元素默选中认样式 */
+        .current1-1{
+            color: rgb(255, 102, 0);
+            background-color: white;
+            border-radius: 5px;
+        }
+        /* 鼠标移入样式 */
+        .current1-2{
+            color: rgb(51,51,51);
+            cursor: pointer;
+            background-color: white;
+            border-radius: 5px;
+        }
+         /* 鼠标移出样式 */
+         .current1-3{
+            color: rgb(255, 102, 0);
+            background-color: white;
+            border-radius: 5px;
+        }
+        /* nav2导航样式 */
+        .nav2-wrap{
+            width: 800px;
+        }
+        .nav2-container{
+            margin: 20px auto;
+        }
+        .nav2{
+            display: flex;
+        }
+        /* 设置外层标题导航 */
+        .nav2-item{
+            padding:10px 20px;
+            border: 1px solid rgb(207, 207, 208);
+            color: rgb(34, 5, 238);
+            background-color: rgb(241, 241, 241);
+        }
+        /* 设置内容展示区 */
+        .nav2-content{
+            margin-top: -1px;
+            border: 1px solid rgb(207, 207, 208);
+        }
+        /* 设置具体内容 */
+        .nav2c-item{
+            display: none;
+            text-align: center;
+            padding: 50px 100px;
+            /* line-height: 120px; */
+        }
+        .nav2c-item .nav2{
+            justify-content: center;
+        }
+        /* 设置默标题认选中样式 */
+        .nav2-hover{
+            border-bottom: 1px solid white;
+            background-color: white;
+        }
+        /* 设置内容元素可见 */
+        .nav2c-visible{
+            display: block;
+        }
+        /* nav3导航移动变化特效（进阶） */
+        .nav3-container{
+            background-color: rgb(254, 152, 0);
+            position: relative;
+        }
+        .nav3{
+            display: flex;
+            padding: 10px 150px;
+            justify-content: space-between;
+            position: relative;
+            z-index: 3;
+            color: rgb(95, 73, 36);
+            font-weight: bold;
+        }
+        .nav3-item{
+            padding: 5px 10px;
+        }
+        .move-box{
+            position: absolute;
+            width: 0px;
+            top: 0px;
+            left: 0px;
+            padding: 15px 0px;
+            border-radius: 10px;
+            background-color: rgb(0, 0, 0);
+
+        }
+        .current3-1{
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- 1.导航选项卡悬停变化特效 -->
+    <!-- nav1导航容器 -->
+    <div class="nav1-container">
+        <!-- nav1内容区 -->
+        <div class="nav1">
+            <!-- nav1功能文字描述 -->
+            <div class="nav1-item current1-1">首页</div>
+            <div class="nav1-item">关于我们</div>
+            <div class="nav1-item">产品中心</div>
+            <div class="nav1-item">案例展示</div>
+            <div class="nav1-item">联系我们</div>
+        </div>
+    </div>
+    <!-- 2.导航选项卡悬停联动变化特效 -->
+    <!-- nav2导航容器 -->
+    <div class="nav2-wrap">
+        <div class="nav2-container nav2-1">
+            <!-- nav2文字内容区 -->
+            <div class="nav2">
+                <!-- nav2功能文字描述 -->
+                <div class="nav2-item nav2-hover">电器</div>
+                <div class="nav2-item">数码</div>
+                <div class="nav2-item">家居</div>
+                <div class="nav2-item">男装</div>
+            </div>
+            <!-- 悬停展示内容区 -->
+            <div class="nav2-content">
+                <!-- 展示的内容文字 -->
+                <!-- nav2c: nav2-content-->
+                <div class="nav2c-item nav2c-visible">电器内容1</div>
+                <div class="nav2c-item">数码内容2</div>
+                <div class="nav2c-item">
+                    <div class="nav2-container nav2-2">
+                        <!-- nav2文字内容区 -->
+                        <div class="nav2">
+                            <!-- nav2功能文字描述 -->
+                            <div class="nav2-item nav2-hover">电器</div>
+                            <div class="nav2-item">数码</div>
+                            <div class="nav2-item">家居</div>
+                            <div class="nav2-item">男装</div>
+                        </div>
+                        <!-- 悬停展示内容区 -->
+                        <div class="nav2-content">
+                            <!-- 展示的内容文字 -->
+                            <!-- nav2c: nav2-content-->
+                            <div class="nav2c-item nav2c-visible">电器内容1</div>
+                            <div class="nav2c-item">数码内容2</div>
+                            <div class="nav2c-item">家居内容3</div>
+                            <div class="nav2c-item">男装内容4</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="nav2c-item">男装内容4</div>
+            </div>
+        </div>
+    </div>
+    <!-- 3、导航移动变化特效（进阶） -->
+    <div class="nav3-container">
+        <div class="nav3">
+            <div class="nav3-item current3-1">网站首页</div>
+            <div class="nav3-item">新闻动态</div>
+            <div class="nav3-item">产品展示</div>
+            <div class="nav3-item">案例欣赏之高手如云</div>
+            <div class="nav3-item">练习我们</div>
+            <div class="nav3-item">留言社区</div>
+        </div>
+        <div class="move-box"></div>
+    </div>
+    <script>
+        /*
+            1、导航选项卡悬停变化特效
+                // function nav1(){
+                //     //获取页面所有nav1下的功能点
+                //     var nodeList = document.querySelectorAll(".nav1>.nav1-item");
+                //     console.log(nodeList);
+                //     //循环添加mouseover事件
+                //     for(let i=0;i<nodeList.length;i++){
+                //         nodeList[i].onmouseover = ()=>{
+                //             for(let j=0;j<nodeList.length;j++){
+                //                 nodeList[j].classList.remove("current1-1");
+                //                 nodeList[j].classList.remove("current1-2");
+                //                 nodeList[j].classList.remove("current1-3");
+                //             }
+                //             nodeList[i].classList.add("current1-2");
+                //         }
+                //         nodeList[i].onmouseout = ()=>{
+                //             for(let j=0;j<nodeList.length;j++){
+                //                 nodeList[j].classList.remove("current1-1");
+                //                 nodeList[j].classList.remove("current1-2");
+                //                 nodeList[j].classList.remove("current1-3");
+                //             }
+                //             nodeList[i].classList.add("current1-3");
+                //         }
+                //     }
+                // }
+        */
+        function Nav1(_nav){
+            var that = this;
+            that.nodeList = document.querySelectorAll(`${_nav}>.nav1-item`);
+            that.type = "click";
+            that.addstyle = "current1-2";
+            that.init = ()=>{
+                for(let i=0;i<that.nodeList.length;i++){
+                    that.nodeList[i].addEventListener(`${that.type}`,()=>{
+                        for(let j=0;j<that.nodeList.length;j++){
+                            that.nodeList[j].classList.remove("current1-1");
+                            that.nodeList[j].classList.remove("current1-2");
+                            that.nodeList[j].classList.remove("current1-3");
+                        }
+                        that.nodeList[i].classList.add(`${that.addstyle}`);
+                    })
+                }
+            }
+        }
+        var nav1_1 = new Nav1(".nav1");
+        var nav1_2 = new Nav1(".nav1")
+        nav1_1.type = "mouseover";
+        nav1_1.init();
+        nav1_2.type = "mouseout";
+        nav1_2.addstyle = "current1-3";
+        nav1_2.init();
+        /*
+            2、导航选项卡悬停联动变化特效
+        */
+        function Nav2(_nav){
+            var that = this;
+            that.nodeList = document.querySelectorAll(`${_nav}>.nav2>.nav2-item `);
+            that.content_list = document.querySelectorAll(`${_nav}>.nav2-content>.nav2c-item `);
+            that.type = "click";
+            that.title_style = "nav2-hover";
+            that.content_style = "nav2c-visible";
+            that.init = ()=>{
+                for(let i=0;i<that.nodeList.length;i++){
+                    that.nodeList[i].addEventListener(`${that.type}`,()=>{
+                        for(let j=0;j<that.nodeList.length;j++){
+                            that.nodeList[j].classList.remove(`${that.title_style}`);
+                            that.content_list[j].classList.remove(`${that.content_style}`);
+                        }
+                        that.nodeList[i].classList.add(`${that.title_style}`);
+                        that.content_list[i].classList.add(`${that.content_style}`);
+                    })
+                }
+            }
+        }
+        var nav2_1 = new Nav2(".nav2-1");
+        var nav2_2 = new Nav2(".nav2-2");
+        nav2_1.type = "mouseover";
+        nav2_2.type = "mouseover";
+        nav2_1.init();
+        nav2_2.init();
+        /*
+            3、导航移动变化特效（进阶）
+        */
+        
+        var nodeList = document.querySelectorAll(".nav3-item");
+        var move_box = document.querySelector(".move-box");
+        var lock = true;
+        nodeList[0].classList.add("curr");
+        move_box.style.width = nodeList[0].offsetWidth + "px";
+        move_box.style.left = nodeList[0].offsetLeft + "px";
+        move_box.style.top = nodeList[0].offsetTop + "px";
+        function Nav3(_nav){
+            var that = this;
+            that.nodeList = nodeList;
+            that.mouse_type = "mouseover";
+            that.init = ()=>{
+                for(let i=0;i<that.nodeList.length;i++){
+                that.nodeList[i].addEventListener(that.mouse_type,()=>{
+                    if(lock){
+                        lock = false;
+                        for(let j=0;j<that.nodeList.length;j++){
+                            that.nodeList[j].classList.remove("current3-1");
+                        }
+                        that.nodeList[i].classList.add("current3-1");
+                        if(that.nodeList[i].offsetLeft>move_box.offsetLeft){
+                            move_box.style.width = that.nodeList[i].offsetLeft+that.nodeList[i].offsetWidth-move_box.offsetLeft+"px";
+                            setTimeout(()=>{
+                                move_box.style.width = that.nodeList[i].offsetWidth+"px";
+                                move_box.style.left = that.nodeList[i].offsetLeft+"px";
+                            },500);
+                            lock=true;
+                        }else{
+                            move_box.style.width = move_box.offsetLeft-that.nodeList[i].offsetLeft+move_box.offsetWidth+"px";
+                            move_box.style.left = that.nodeList[i].offsetLeft+"px";
+                            setTimeout(()=>{
+                                move_box.style.width = that.nodeList[i].offsetWidth+"px";
+                            },500);
+                            lock=true;
+                        }
+                    }
+                })
+                }
+            }
+        }
+        var nav3_1 = new Nav3(".nav3");
+        nav3_1.init();
+    </script>
+</body>
+</html>

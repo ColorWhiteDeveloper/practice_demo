@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .main-container{
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+        .mc-image{
+            display: flex;
+            margin-top: 20px;
+            position: relative;
+        }
+        .circle{
+            display: flex;
+            position: absolute;
+            justify-content: center;
+            bottom: 10px;
+            width: 650px;
+            z-index: 1;
+        }
+        span{
+            width: 10px;
+            height: 10px;
+            margin-left: 15px;
+            background-color: white;
+            border-radius: 50%;
+        }
+        .arrow-area{
+            position: absolute;
+            width: 650px;
+            display: flex;
+            justify-content: space-between;
+            top: 200px;
+        }
+        .arrow-area>div{
+            padding: 10px 30px;
+            background-color: rgb(255, 0, 0);
+            border-radius: 15px;
+            color: white;
+        }
+        .change-color{
+            background-color: rgb(255, 153, 0);
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <div class="main-wrap">
+            <div class="main-container">
+                <!-- mc:main-container -->
+                <!-- 轮播图区域 -->
+                <div class="mc-image">
+                    <img src="images/p1.jpg" alt="" id="lun-bo">
+                </div>
+                <div class="arrow-area">
+                    <!-- 右箭头 -->
+                    <div class="arrow-left arrow">左</div>
+                    <!-- 左箭头 -->
+                    <div class="arrow-right arrow">右</div>
+                </div>
+                <!-- 底部小圆点 -->
+                <div class="circle">
+                    <span class="lun-bo change-color"></span>
+                    <span class="lun-bo"></span>
+                    <span class="lun-bo"></span>
+                    <span class="lun-bo"></span>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+        var picture_address = [//定义一个图片地址数组
+        "images/p1.jpg",
+        "images/p2.jpg",
+        "images/p3.jpg",
+        "images/p4.jpg",
+        ]
+        var arrow_left = document.querySelector(".arrow-left");//获取页面左箭头元素
+        var arrow_right = document.querySelector(".arrow-right");//获取页面右箭头元素
+        var circle = document.querySelector(".circle");//获取页面小圆点区域
+        var circle_list = document.querySelectorAll(".lun-bo");//获取页面小圆点
+        var flag = 0;//0代表是向右移动，1代表向左移动
+        arrow_right.onclick = ()=>{//右侧按钮入口
+            console.log("进入右侧按钮功能");//打印一下是否进入
+            flag = 0;
+            var pictureAddress = document.querySelector("#lun-bo");//选中当前页面图片元素
+            // console.log(pictureAddress,pictureAddress.src);//打印一下是否选中
+            //得到当前页面图片的下标
+            var picture_index = getIndex(pictureAddress,picture_address);//传入页面图片和图片地址数据，返回图片所在的下标
+            console.log(picture_index); //打印一下获取到的图片地址下标
+            //得到修改页面图片地址
+            var modifyAddress = modify(picture_index,picture_address,flag);//传入当前页面的地址和地址数据
+            // console.log(modifyAddress);
+            //修改页面小圆点
+            modifyCircle(picture_index,circle,flag);//修改到对应的小圆点
+            //渲染数据到页面
+            render(modifyAddress,pictureAddress);//传入要被修改图片地址的页面元素以及修改的地址
+        }
+        arrow_left.onclick = ()=>{//右侧按钮入口
+            console.log("进入左侧按钮功能");//打印一下是否进入
+            flag = 1;
+            var pictureAddress = document.querySelector("#lun-bo");//选中当前页面图片元素
+            // console.log(pictureAddress,pictureAddress.src);//打印一下是否选中
+            //得到当前页面图片的下标
+            var picture_index = getIndex(pictureAddress,picture_address);//传入页面图片和图片地址数据，返回图片所在的下标
+            console.log(picture_index); //打印一下获取到的图片地址下标
+            //得到修改页面图片地址
+            var modifyAddress = modify(picture_index,picture_address,flag);//传入当前页面的地址和地址数据
+            console.log(modifyAddress);
+            //修改页面小圆点
+            modifyCircle(picture_index,circle,flag);//修改到对应的小圆点
+            //渲染数据到页面
+            render(modifyAddress,pictureAddress);//传入要被修改图片地址的页面元素以及修改的地址
+        }
+        for(let i=0;i<circle_list.length;i++){
+            circle_list[i].onmouseover = ()=>{
+                flag = 3;
+                console.log(i);//打印一下第几个
+                var pictureAddress = document.querySelector("#lun-bo");//选中当前页面图片元素
+                var circle_modifyAddress = modify(i,picture_address,flag);//传入当前页面的地址和地址数据
+                console.log(circle_modifyAddress);//打印一下对应的小圆点图片地址
+                modifyCircle(i,circle,flag);//修改到对应的小圆点
+                render(circle_modifyAddress,pictureAddress);//传入要被修改图片地址的页面元素以及修改的地址
+            }
+        }
+        //渲染数据到页面
+        function render(_address,_item){
+            _item.src = _address;
+        }
+        //修改页面小圆点
+        function modifyCircle(_index,_list,_flag){
+            //页面初始化
+            for(let i=0;i<_list.children.length;i++){
+                _list.children[i].classList.remove("change-color");
+            }
+            if(_flag==0){
+                //对应页面添加效果
+                if(_index+1==_list.children.length){
+                    _index = -1;
+                }
+                _list.children[_index+1].classList.add("change-color");
+            }else if(_flag==1){
+                if(_index-1<0){
+                    _index = 4;
+                }
+                _list.children[_index-1].classList.add("change-color");
+            }else{
+                _list.children[_index].classList.add("change-color");
+            }
+        }
+         //修改页面图片地址
+        function modify(_index,_data,_flag){
+            if(_flag==0){
+                if(_index+1==_data.length){
+                    _index = -1;
+                }
+                return _data[_index+1];
+            }else if(_flag==1){
+                if(_index-1<0){
+                    _index = 4;
+                }
+                return _data[_index-1]
+            }else{
+                return _data[_index];
+            }
+        }
+        //获取当前页面图片的下标
+        function getIndex(_item,_list){//_item是当前页面的图片元素，_list是图片地址数据
+            // console.log(_item,_list);//
+            var res = 0;//接收匹配到的下标
+            for(let i=0;i<_list.length;i++){
+                if(_item.src.includes(_list[i])){
+                    res = i;
+                    break;
+                }
+            }
+            return res;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /*
+        // console.log(arrow_left,arrow_right);//打印一下获取到的页面元素
+        // console.log(circle_list);
+        // var time = 0;//判断是否等于picture_address.length
+        // var flag = 0;//判断是否等于picture_address.length
+        // arrow_left.onclick = ()=>{
+        //     console.log("点击了一下左箭头");   
+        //     // console.log("flag:"+flag);
+        //     var now_pictureAddress = document.getElementById("lun-bo").src;//获取到当前图片地址
+        //     var span_style = document.querySelector(".circle");//获取到页面小圆点的父节点
+        //     for(let i=0;i<span_style.children.length;i++){
+        //         span_style.children[i].classList.remove("change-color");//页面初始化
+        //     }
+        //     // console.log(now_pictureAddress);//查看是否获取到图片地址
+        //     for(let i=0;i<picture_address.length;i++){
+        //         if(now_pictureAddress.includes(picture_address[i])){
+        //             flag = i;
+        //             // console.log("flag是"+flag);//打印一下此时的i
+        //             if(flag==0){
+        //                 flag=4;
+        //             }         
+        //             document.getElementById("lun-bo").src = picture_address[flag-1];
+        //             document.querySelector(".circle").children[flag-1].classList.add("change-color");
+        //             flag--;
+        //     }
+        //     }
+        //     // console.log("flag:"+flag);
+        // }
+        // arrow_right.onclick = ()=>{//右箭头功能入口
+        //     console.log("点击了一下右箭头");//是否进入功能
+        //     var now_pictureAddress = document.getElementById("lun-bo").src;//获取到当前图片地址
+        //     var span_style = document.querySelector(".circle");//获取到页面小圆点的父节点
+        //     for(let i=0;i<span_style.children.length;i++){
+        //         span_style.children[i].classList.remove("change-color");//页面初始化
+        //     }
+        //     // console.log(now_pictureAddress);//查看是否获取到图片地址
+        //     for(let i=0;i<picture_address.length;i++){
+        //         if(now_pictureAddress.includes(picture_address[i])){
+        //             // console.log(i);//打印一下此时的i
+        //             document.getElementById("lun-bo").src = picture_address[time+1];
+        //             document.querySelector(".circle").children[time+1].classList.add("change-color");
+        //             time++;//如果成功,time自增
+        //         }
+        //     }
+        //     // console.log("time:"+time);
+        //     if(time==picture_address.length-1){
+        //         time=-1;
+        //     }
+        //     // console.log("time:"+time);
+        // }
+        // for(let i=0;i<circle_list.length;i++){
+        //     circle_list[i].onclick = ()=>{
+        //         console.log(i);
+        //     }
+        // }
+        */
+        
+    </script>
+</body>
+</html>

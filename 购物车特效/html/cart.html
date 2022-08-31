@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .main{
+            width: 1200px;
+            margin: 50px auto;
+        }
+        .list-item{
+            display: flex;
+            /* justify-content: space-between; */
+            position: relative;
+            padding: 20px;
+            border-bottom: 1px solid rgb(208, 208, 208);
+        }
+        .list-check{
+            position: absolute;
+            left: 0px;
+            bottom: 16px;
+        }
+        .list-img{
+            margin-left: 10px;
+            background-image: url(../images/list1.jpg);
+            width: 100px;
+            height: 100px;
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+        }
+        .list-text{
+            margin:40px 0px 0px 20px
+        }
+        .list-name{
+            width: 400px;
+        }
+        .list-desc{
+            width: 400px;
+            padding-top: 10px;
+            color: rgb(144, 144, 144);
+        }
+        .list-price{
+            margin-top: 50px;
+        }
+        .list-num{
+            margin-left: 50px;
+            margin-top: 70px;
+        }
+        .list-delete{
+            color: rgb(173, 171, 168);
+            margin-top: 70px;
+            margin-left: 50px;
+        }
+        .num{
+            text-align: center;
+            width: 20px;
+        }
+        .main-bottom{
+            display: flex;
+            justify-content: space-around;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        // 获取缓存里面的数据
+        var list = JSON.parse(localStorage.getItem("list"));
+        // 处理数据
+        var list_filter = [];
+        // 处理要存储的数据
+        if(list!=null){
+            list_filter  =  filterData(list);
+        }
+        // console.log(list_filter);
+        // 要生成在购物车生成商品的数量长度
+        var listLength = list_filter.length;
+        // 总价
+        var total_price = 0;
+        // 总件数
+        var total_num = 0;
+        totalPriceInit();
+        // 页面初始化
+        init();
+        var total = document.querySelector(".total-price");
+        // 获取商品列表
+        var goodslist = document.querySelectorAll(".list-check");
+        var reducelist = document.querySelectorAll(".reduce");
+        var addlist = document.querySelectorAll(".add");
+        var self_num = document.querySelectorAll(".num");
+        var all_selected = document.querySelector(".option");
+        var slef_delete = document.querySelectorAll(".list-delete");
+        console.log(slef_delete);
+        for(let i=0;i<goodslist.length;i++){
+                reducelist[i].onclick = ()=>{
+                    var self_value = Number(self_num[i].value);
+                    if(goodslist[i].checked == true){
+                        self_value = numReduce(i);
+                    }
+                    self_num[i].value = `${self_value}`;
+                }
+                addlist[i].onclick = ()=>{
+                    var self_value = Number(self_num[i].value);
+                    if(goodslist[i].checked == true){
+                        self_value = numAdd(i);
+                    }
+                    self_num[i].value = `${self_value}`;
+                }
+                goodslist[i].onclick = ()=>{
+                    if(goodslist[i].checked == true){
+                        var time = 0;
+                        // 判断是否所有都被选中
+                        for(let j=0;j<goodslist.length;j++){
+                            if(goodslist[j].checked == true){
+                                time++;
+                            }
+                        }
+                        if(time == goodslist.length){
+                            all_selected.checked = true;
+                        }
+                        priceTotalAdd(i);
+                    }else{
+                        all_selected.checked = false;
+                        priceTotalReduce(i);
+                    }
+                }
+                slef_delete[i].onclick = ()=>{
+                    list_filter.splice(i,1);
+                    localStorage.setItem("list",JSON.stringify(list_filter));
+                    item_main.removeChild(slef_delete[i].parentNode);
+
+                    window.location.href = "";
+                }
+            }
+        // 获取被删除的元素
+        var deletelist = [];
+        // console.log(goodslist);
+        all_selected.onclick = ()=>{
+            // console.log(all_selected);
+            if(all_selected.checked==true){
+                for(let i=0;i<goodslist.length;i++){
+                    if(goodslist[i].checked != true){
+                        goodslist[i].checked = true;
+                        priceTotalAdd(i);
+                    }
+                }
+            }else{
+                for(let i=0;i<goodslist.length;i++){
+                   if(goodslist[i].checked != false){
+                        goodslist[i].checked = false;
+                        priceTotalReduce(i);
+                   }
+                }
+            }
+        }
+        // 获取总删除选中按钮
+        var deleteChecked = document.querySelector(".delete-all");
+        var all_list = document.querySelectorAll(".list-name");
+        var item_main = document.querySelector(".main");
+        deleteChecked.onclick = ()=>{
+            for(let i=0;i<goodslist.length;i++){
+                if(goodslist[i].checked == true){
+                    deletelist.push(goodslist[i]);
+                    for(let j=0;j<list_filter.length;j++){
+                        if(all_list[i].innerHTML == list_filter[j][1]){
+                            // 删除选中元素
+                            list_filter.splice(j,1);
+                            localStorage.setItem("list",JSON.stringify(list_filter));
+                        }
+                    }
+                    if(JSON.parse(localStorage.getItem("list")).length==0){
+                        localStorage.removeItem("list");
+                        all_selected.checked = false;
+                    }
+                }
+            }
+            for(let i=0;i<deletelist.length;i++){
+                item_main.removeChild(deletelist[i].parentNode);
+            }
+            deletelist = [];
+        }
+        function totalPriceInit(){
+            for(let i=0;i<list_filter.length;i++){
+               var single_price = Number(list_filter[i][3].slice(0,list_filter[i][3].length-1));
+               var single_num = Number(list_filter[i][list_filter[i].length-1]);
+               total_num += single_num;
+               single_price = single_price*single_num;
+               total_price += single_price;
+            }
+        }
+        // 工具函数 - 处理数据
+        function filterData(_list){
+            _list = _list.filter((arr)=>{
+                if(arr != null){
+                    return arr;
+                }       
+            })
+            return _list;
+        }
+        // 工具函数 - 增加数量
+        function numAdd(_index){
+            var num = Number(self_num[_index].value);
+            var single_price = list_filter[_index][3];
+            single_price = Number(single_price.slice(0,single_price.length-1));
+            single_price = single_price * 1;
+            total_price += single_price; 
+            total_num += 1;
+            total.innerHTML = `总数:${total_num} 总价:${total_price} 去结算`;
+            num += 1;
+            return num;
+        }
+        // 工具函数 - 减少数量
+        function numReduce(_index){
+            var num = Number(self_num[_index].value);
+            console.log(num);
+            var single_price = list_filter[_index][3];
+            if(num > 0){
+                single_price = Number(single_price.slice(0,single_price.length-1));
+                single_price = single_price*1;
+                total_price -= single_price; 
+                total_num -=1;
+                total.innerHTML = `总数:${total_num} 总价:${total_price} 去结算`;
+            }
+            if(num>0){
+                num -= 1;
+            }else{
+                num=0;
+            }
+            return num;
+        }
+        // 工具函数 - 总价和总数
+        function priceTotalAdd(_index){
+            var single_price = list_filter[_index][3];
+            var num = Number(self_num[_index].value);
+            single_price = Number(single_price.slice(0,single_price.length-1));
+            single_price = single_price * num;
+            total_price += single_price; 
+            total_num += num;
+            total.innerHTML = `总数:${total_num} 总价:${total_price} 去结算`;
+        }
+        // 工具函数 - 总价和总数
+        function priceTotalReduce(_index){
+            var single_price = list_filter[_index][3];
+            var num = Number(self_num[_index].value);
+            single_price = Number(single_price.slice(0,single_price.length-1));
+            single_price = single_price * num;
+            total_price -= single_price; 
+            total_num -= num;
+            total.innerHTML = `总数:${total_num} 总价:${total_price} 去结算`;
+        }
+        // 工具函数 - 初始化页面
+        function init(){
+            // create main
+            var main = document.createElement("div");
+            // add classlist 
+            main.classList.add("main");
+
+            for(let i=0;i<listLength;i++){
+                // create goddslist
+                var list_item = document.createElement("div");
+                // add classlist
+                list_item.classList.add("list-item");
+
+                // create list-check
+                var list_check = document.createElement("input");
+                // add checkbox
+                list_check.setAttribute("type","checkbox");
+                list_check.checked = true;
+                // add classlist
+                list_check.classList.add("list-check");
+
+                // create list-img
+                var list_img = document.createElement("div");
+                // add classlist
+                list_img.classList.add("list-img");
+                // add url0
+                list_img.style.backgroundImage = `url(.${list_filter[i][0]})`;
+
+                // create list-text
+                var list_text = document.createElement("div");
+                // add classlist
+                list_text.classList.add("list-text");
+
+                // create list-name
+                var list_name = document.createElement("div");
+                //add classlist
+                list_name.classList.add("list-name");
+                // add text
+                list_name.innerHTML = `${list_filter[i][1]}`;
+
+                // create list-desc
+                var list_desc = document.createElement("div");
+                // add classlist
+                list_desc.classList.add("list-desc");
+                 // add text
+                 list_desc.innerHTML = `${list_filter[i][2]}`;
+
+                // create list-price
+                var list_price = document.createElement("div");
+                // add classlist
+                list_price.classList.add("list-price");
+
+                // create list-preprice
+                var original_price = document.createElement("div");
+                // add classlist 
+                original_price.classList.add("original-price");
+                // insert text
+                original_price.innerHTML = `<sub><del>${list_filter[i][4]}</del></sub>`
+
+                // create list-nowprice
+                var present_price = document.createElement("div");
+                // add classlist
+                present_price.classList.add("present-price");
+                // insert text
+                present_price.innerHTML = `${list_filter[i][3]}`;
+
+                // create list-num
+                var list_num = document.createElement("div");
+                // add classlist
+                list_num.classList.add("list-num");
+
+                // create reduce
+                var list_btn1 = document.createElement("button");
+                // add classlist
+                list_btn1.classList.add("reduce");
+                // insert text
+                list_btn1.innerHTML = "-";
+
+                // create input-num
+                var input_num = document.createElement("input");
+                // add classlist
+                input_num.classList.add("num");
+                 // add text
+                 input_num.value = `${list_filter[i][list_filter[i].length-1]}`;
+
+                // create add
+                var list_btn2 = document.createElement("button");
+                // add classlist
+                list_btn2.classList.add("add");
+                // insert text
+                list_btn2.innerHTML = "+";
+
+                // create delete
+                var list_delete = document.createElement("div");
+                // add classlist 
+                list_delete.classList.add("list-delete");
+                // insert text
+                list_delete.innerHTML = "删除";
+
+                // generate html
+                list_item.appendChild(list_check);
+                list_item.appendChild(list_img);
+                list_item.appendChild(list_text);
+                list_text.appendChild(list_name);
+                list_text.appendChild(list_desc);
+                list_item.appendChild(list_price);
+                list_price.appendChild(original_price);
+                list_price.appendChild(present_price);
+                list_item.appendChild(list_num);
+                list_num.appendChild(list_btn1);
+                list_num.appendChild(input_num);
+                list_num.appendChild(list_btn2);
+                list_item.appendChild(list_delete);
+                main.appendChild(list_item);
+                // priceTotalAdd(i);
+            }
+            //create bottom 
+            var bottom  = document.createElement("div");
+            var checkDiv = document.createElement("div");
+            bottom.classList.add("main-bottom");
+            var checkAll = document.createElement("input");
+            // create check
+            checkAll.setAttribute("type","checkbox");
+            checkAll.checked = true;
+            checkAll.classList.add("option");
+            // create span
+            var check_span = document.createElement("span");
+            // insert text
+            check_span.innerHTML = "全选";
+
+            // create delete_selected
+            var delete_checked = document.createElement("div");
+            delete_checked.innerHTML = "删除";
+            delete_checked.classList.add("delete-all");
+            delete_checked.style.color = "rgb(15, 205, 206)";
+
+            // create all_num
+            var total = document.createElement("span");
+            total.classList.add("total-price");
+            total.innerHTML = `总数:${total_num} 总价:${total_price} 去结算`;;
+
+            bottom.appendChild(checkDiv);
+            checkDiv.appendChild(checkAll);
+            checkDiv.appendChild(check_span);
+            bottom.appendChild(delete_checked);
+            bottom.appendChild(total);
+            main.appendChild(bottom);
+            document.body.appendChild(main);
+        }
+    </script>
+</body>
+</html>

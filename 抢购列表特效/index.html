@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/index.css">
+</head>
+<body>
+    <script src="./js/index.js"></script>
+    <script>
+        //商品数据
+        var goods_data = {
+         tips:["距离抢购开始还有","抢购剩余时间","抢购结束"],
+         btn:["即将开始","立即抢购","已结束"],  
+         btnStyle:["btn","btn-start","btn-end"], 
+         name:["小米小爱蓝牙音箱随身版小米小爱蓝牙音箱随身版","贝医生0+防蛀健齿牙膏 10","小米路由器4C 白色","小米旅行箱 青春款 20英寸...","米家直流变频落地扇 白色","烟灶套装 (天然气)"],
+         desc:["小巧便携，一键唤醒小爱","强奸牙釉质，牙齿更坚固","小巧便携，一键唤醒小爱","环保材料，轻便重量","用科技创造自然风","点火排烟，风随火动",],
+         nowprice:["24.50元","1.00元","24.50元","199.00元","279.00元","1999.00元"],
+         preprice:["49元","12.9元","49元","249元","349元","2298元"],
+         discount:["5折","1元","5折","8折","8折","8.7折"],
+         adrress:["./images/list1.jpg","./images/list2.jpg","./images/list3.jpg","./images/list4.jpg","./images/list5.jpg","./images/list6.jpg"],
+         startime:["2022/01/21 08:00:00","2022/01/20 14:28:00","2022/01/19 10:00:00","2022/01/19 15:00:00","2022/01/18 08:00:00","2022/01/18 06:00:00"],
+         endtime:["2022/01/21 13:00:00","2022/01/20 14:42:00","2022/01/19 18:00:00","2022/01/19 18:30:00","2022/01/18 18:20:00","2022/01/18 09:00:00"],
+        }; 
+        var goods = new Goods(goods_data);
+        goods.init();
+    </script>
+</body>
+</html>

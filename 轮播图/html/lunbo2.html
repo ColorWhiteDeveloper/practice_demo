@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .main-container{
+            position: relative;
+            width: 650px;
+            height: 433px;
+            margin: 20px auto;
+            overflow: hidden;
+        }
+        .mc-image{
+            display: flex;
+            /* margin-top: 20px; */
+            position: absolute;
+            width: 2600px;
+            height: 433px;
+        }
+        .mc-image>img{
+            float: left;
+        }
+        .circle{
+            display: flex;
+            position: absolute;
+            justify-content: center;
+            bottom: 10px;
+            width: 650px;
+            z-index: 1;
+        }
+        span{
+            width: 10px;
+            height: 10px;
+            margin-left: 15px;
+            background-color: white;
+            border-radius: 50%;
+        }
+        .arrow-area{
+            position: absolute;
+            width: 650px;
+            display: flex;
+            justify-content: space-between;
+            top: 200px;
+        }
+        .arrow-area>div{
+            padding: 10px 30px;
+            background-color: rgb(255, 0, 0);
+            border-radius: 15px;
+            color: white;
+        }
+        .change-color{
+            background-color: rgb(255, 153, 0);
+        }
+        .show-box{
+            width: 650px;
+            height: 433px;
+            position: absolute;
+            top: 0px;
+            background-color: rgba(0,0,0,0.3);
+        }
+        .animation-picture2{
+            animation: change2 1s linear;
+        }
+        .animation-picture1{
+            animation: change1 1s linear;
+            /* animation-direction: reverse;  */
+        }
+        .animation-picture{
+            animation: change 1s linear;
+            /* animation-direction: reverse; */
+        }
+        @keyframes change{
+            0%{
+                /* margin-left: -1300px; */
+                opacity: 0;
+            }
+            25%{
+                /* margin-left: -1137px; */
+                opacity: 0.25;
+            }
+            50%{
+                /* margin-left: -975px; */
+                opacity: 0.5;
+            }
+            75%{
+                /* margin-left: -812px; */
+                opacity: 0.75;
+            }
+            100%{
+                /* margin-left: -650px; */
+                opacity: 1;
+            }
+        }
+        @keyframes change1{
+            0%{
+                /* margin-left: 0px; */
+                width: 650px;
+                opacity: 1;
+            }
+            25%{
+                /* margin-left:-163px; */
+                width: 488px;
+                opacity: 0.75;
+            }
+            50%{
+                /* margin-left: -325px; */
+                width: 325px;
+                opacity: 0.5;
+            }
+            75%{
+                /* margin-left: -488px; */
+                width: 163px;
+                opacity: 0.25;
+            }
+            100%{
+                /* margin-left: -650px; */
+                width: 0px;
+                opacity: 0;
+            }
+        }
+        @keyframes change2{
+            /* 0%{
+                width: 0px;
+                opacity: 0;
+            }
+            25%{
+                width: 163px;
+                opacity: 0.25;
+            }
+            50%{
+                width: 325px;
+                opacity: 0.5;
+            }
+            75%{
+                width: 488px;
+                opacity: 0.75;
+            }
+            100%{
+                width: 650px;
+                opacity: 1;
+            } */
+            0%{
+                margin-left: 0px;
+                /* width: 0px; */
+                opacity: 0;
+            }
+            25%{
+                margin-left:163px;
+                /* width: 163px; */
+                opacity: 0.25;
+            }
+            50%{
+                margin-left: 325px;
+                /* width: 325px; */
+                opacity: 0.5;
+            }
+            75%{
+                margin-left: 488px;
+                /* width: 488px; */
+                opacity: 0.75;
+            }
+            100%{
+                margin-left: 650px;
+                /* width: 650px; */
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <div class="main-wrap">
+            <div class="main-container">
+                <!-- mc:main-container -->
+                <!-- 轮播图区域 -->
+                <div class="mc-image">
+                    <img src="../images/p1.jpg" alt="" id="1" class="lunbo animation-picture">
+                    <img src="../images/p2.jpg" alt="" id="2" class="lunbo">
+                    <img src="../images/p3.jpg" alt="" id="3" class="lunbo">
+                    <img src="../images/p4.jpg" alt="" id="4" class="lunbo">
+                </div>
+                <div class="show-box">
+                    <div class="arrow-area">
+                        <!-- 右箭头 -->
+                        <div class="arrow-left arrow">左</div>
+                        <!-- 左箭头 -->
+                        <div class="arrow-right arrow">右</div>
+                    </div>
+                    <!-- 底部小圆点 -->
+                    <div class="circle">
+                        <span class="change-color"></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+        var arrow_left = document.querySelector(".arrow-left");//获取页面左箭头元素
+        var arrow_right = document.querySelector(".arrow-right");//获取页面右箭头元素
+        var circle = document.querySelector(".circle");//获取页面小圆点区域
+        var circle_list = document.querySelectorAll(".circle>span");//获取小圆点
+        var picture_list = document.querySelector(".mc-image");//获取图片区域
+        var show_box = document.querySelector(".show-box");
+        show_box.style.left = picture_list.offsetLeft + "px";
+        show_box.style.top =picture_list.offsetTop + "px";
+        var time = 0;
+        var timer = null;
+        arrow_right.onclick = ()=>{//右侧按钮入口
+            //初始化页面
+            init(picture_list);
+            circle_init(circle_list);
+            clearInterval(timer);
+            // 获取下一张图片
+            time = reset(time,picture_list);//重置time
+            next_picture(time,picture_list,circle_list);
+            time++; 
+        }
+        arrow_left.onclick = ()=>{//右侧按钮入口
+            //初始化页面
+            init(picture_list);
+            circle_init(circle_list);
+            // 获取下一张图片
+            time = reset_flag(time,picture_list);
+            pre_picture(time,picture_list,circle_list);
+            time--;
+            clearInterval(timer);
+        }
+        for(let i=0;i<circle_list.length;i++){
+            circle_list[i].onmouseover = ()=>{
+                init(picture_list);
+                circle_init(circle_list);
+                clearInterval(timer);
+                circle_list[i].classList.add("change-color");
+                var left_px;
+                if(i==0){
+                    left_px = picture_list.children[0].offsetLeft;
+                    picture_list.children[0].classList.add("animation-picture");
+                }else{
+                left_px = picture_list.children[i].offsetLeft;
+                picture_list.children[i-1].classList.add("animation-picture1");
+                }
+                picture_list.children[i].classList.add("animation-picture");
+                setTimeout(()=>{
+                    picture_list.style.left = "-" + left_px + "px";
+                },1000);
+                time = i;
+            }
+            circle_list[i].onmouseout = ()=>{
+                autoplay();
+            }
+        }
+        //自动播放
+        function autoplay(){
+                timer = setInterval(() => {
+                    init(picture_list);
+                    circle_init(circle_list);
+                    time = reset(time,picture_list);//重置time
+                    next_picture(time,picture_list,circle_list);
+                    console.log(time);
+                    time++;
+            },3000);
+        }
+        autoplay();
+        //初始化小圆圈
+        function circle_init(_list){
+            for(let i=0;i<_list.length;i++){
+                _list[i].classList.remove("change-color");
+            }
+        }
+        //获取上一张图
+        function pre_picture(_flag,_list,_circleList){
+            if(_flag>0){
+               if(_flag==_list.children.length){
+                _list.children[0].classList.add("animation-picture1");
+               }else{
+                _list.children[_flag].classList.add("animation-picture1");
+               }
+               _list.children[_flag-1].classList.add("animation-picture2");
+                var left_px = _list.children[_flag-1].offsetLeft;
+                setTimeout(()=>{
+                    _list.style.left = "-" + left_px + "px";
+                },1000);
+                _circleList[_flag-1].classList.add("change-color");
+            }
+        }
+        //初始化页面
+        function init(_list){
+            for(let i=0;i<_list.children.length;i++){
+                _list.children[i].classList.remove("animation-picture");
+                _list.children[i].classList.remove("animation-picture1");
+                _list.children[i].classList.remove("animation-picture2");
+            }
+        }
+        function reset_flag(_flag,_list){
+            if(_flag==0){
+                _flag = 4;
+            }
+            return _flag;
+        }
+        //重置
+        function reset(_time,_list){
+            if(_time==_list.children.length-1){
+                _time = -1;
+            }
+            return _time;
+        }
+        // 获取下一张图片
+        function next_picture(_time,_list,_circleList){
+            // console.log(_time);
+            if(_time<_list.children.length-1){
+                if(_time==-1){
+                    _list.children[_list.children.length-1].classList.add("animation-picture1");
+                }else{
+                    _list.children[_time].classList.add("animation-picture1");
+                }
+                _list.children[_time+1].classList.add("animation-picture");
+                var left_px = _list.children[time+1].offsetLeft;
+                setTimeout(()=>{
+                    _list.style.left = "-" + left_px + "px";
+                },1000);
+                _circleList[_time+1].classList.add("change-color");
+            }
+            // if(_time == 0){
+            //     _list.children[_time+1].classList.add("animation-picture");
+            //     _list.style.left = "-" + _list.children[_time].offsetWidth + "px";
+            // }else if(_time <_list.children.length-1){
+            //     _list.children[_time+1].classList.add("animation-picture");
+            //     var left_px = _list.children[_time].offsetLeft+ _list.children[_time].offsetWidth;
+            //     _list.style.left = "-" + left_px + "px";
+            // }else if(_time == _list.children.length-1){
+            //     _list.style.left = "-" + 0 + "px";
+            //     _list.children[0].classList.add("animation-picture");
+            // }
+        }
+    </script>
+</body>
+</html>

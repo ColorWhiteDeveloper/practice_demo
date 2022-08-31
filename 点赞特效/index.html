@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .wrap{
+            width: 1200px ;
+            margin: 50px auto;
+            /* background-color: rosybrown; */
+        }
+        .container{
+            display: flex;
+        }
+        aside{
+            width: 100px;
+            height: 300px;
+            padding-left: 20px;
+            padding-top: 20px;
+            border: 1px solid rgb(221, 221, 221);
+            border-bottom-right-radius: 20px;
+        }
+        .text-area{
+            margin-left: 80px;
+            margin-right: 20px;
+        }
+        .text-item{
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgb(239, 239, 239);
+        }
+        .text-content{
+            padding-bottom: 10px;
+        }
+        .text-like{
+            width: 50px;
+            padding: 5px 0px;
+            text-align: center;
+            border-radius: 20px;
+            border: 1px solid rgb(212, 212, 212);
+            color: rgb(116, 115, 110);
+        }
+        .change{
+            background-color: rgb(255, 102, 0);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        // 定义数据
+        var data = [
+            "小区门口修车师傅生意特好。人实在,只要不换零件，常常不收钱或只收个块把钱辛苦钱。最近发现他心黑了，价钱明显上调,就连充个气也收1块钱。旁边书报亭大妈是知情人，:唉，多担待一下吧!他家上个月二胎,一窝生了四个带把的。。。",
+            "前天和同事去逛超市，说好久没买肉吃了，于是去看猪肉，结果看到的最便宜的猪肉都要十八块多，同事当场惊呼:“猪怎么了，这是!”卖肉的师傅笑着说:“猪没事，就是涨价了。”",
+            "去小卖部买烟，10块钱一盒的，给老板100，老板喜咪咪的看着我说:“我没零钱找你，就让我闺女陪你—晚抵账得了。”我一激动:“你老别介啊，我攒个私房钱出来偷偷买烟，真的很不容易啊!”老板:“怎么，你不愿意?要不然我去把我闺女叫出来!”我:“别!别!这钱你不用找了，千万别让您闺女知道我藏私房钱啊!”老板:“好女婿，只要你经常来买东西，我保证不说!哈哈哈”",
+            "昨天路过单位餐厅门口的金鱼池，正好看到一条小金鱼蹦到外边了，还在张嘴，就捡起来扔到池子里。回到家跟老婆聊天时随口说起，老婆抱怨着说，“我说你个缺心眼的，怎么不去向它要幢别墅呢!”",
+            "刚才在QQ上有个还在上大学的姑娘突然跟我讲:“朋友介绍我去打工，今天晚上要到一个酒吧领舞，现在有点不敢去。”我:“有什么不敢去的?”姑娘:“刚才在小摊上只吃了碗牛肉面，怕到时候饿。”一一姑娘，你心太宽了!",
+            "为什么古装剧里总是有女人会对恩人说:小女子无以为报，唯有以身相许，古代真的存在这种现象吗?扯淡，那是因为她喜欢他，要是不喜欢，她就会说:小女子无以为报，唯有来生再报了。",
+            "70年代时，有一长辈练铁沙掌，功夫成了之后，可以掌断五砖，凌空碎砖，威风的不得了。到80年代，只能掌断三砖。到90年代只能—砖一砖的断了。他说，一直以为功力退步了，后来才知道烧砖的配方改了。。。",
+            "网上聊了一妹子，今天见面。问老妈要了二百块钱，老妈问我干嘛用，我说约会，她高高兴兴的就给了。刚出家门，老爸就把我拽到—边说“小子，二百块钱给我一百，半个月不知道烟的滋味了。”我说“爸，这是我和女朋友的约会钱，不能给你。”老爸说了。“你约什么会，那是我刚建的小号，为了抽颗烟我和你聊了半个月了，快拿来。”",
+            "家长对孩子的教育真的非常重要。有些男孩，小时候调皮的很，偷了邻居家一根针，家长也不管，一根针嘛，没事。结果孩子长大了，不好好学习每天呆在家里刺十字绣。",
+            "一女人问大师:大师，在这么复杂险恶的世界，我一个弱女子如何保护自己?大师说:你把妆卸了!",
+        ];
+        // 定义是否点击，默认为0，没有点击
+        var flag = [0,0,0,0,0,0,0,0,0,0];
+        var totalNum = [];
+        var likedNum = []; 
+        var dislikeNum = [];
+        // 页面初始化
+        init();
+        // 选中页面元素
+        var selfClickList = document.querySelectorAll(".text-like"); 
+        var times1 =  document.querySelector(".liked-number").children;
+        var times2 =  document.querySelector(".dislike-number").children;
+        var likedArea = document.querySelector(".liked-number");
+        var dislikeArea = document.querySelector(".dislike-number");
+        // 推总数据
+        pushTotalNumData();
+        // 处理数据
+        filterFlagData();
+        // 推flag点击判断
+        pushFlagData();
+        // 推喜欢数据
+        filterLikedData();
+        pushLikedNumData();
+        // 已赞数据初始化
+        likedData();
+        // 已赞初始化
+        likedInit();
+        // 未赞数据初始化
+        dislikeData();
+        pushDisLikeNumData();
+        // 未赞初始化
+        dislikeInit();
+        // console.log(likedNum);
+        // 添加文章点赞按钮点击事件
+        for(let i=0;i<selfClickList.length;i++){
+            selfClickList[i].onclick = ()=>{
+                // pushDisLikeNumData();
+                flag = JSON.parse(localStorage.getItem("flag"));
+                dislikeNum = JSON.parse(localStorage.getItem("dislikeNum"));
+                likedNum = JSON.parse(localStorage.getItem("likedNum"));
+                if(flag[i] == 0){
+                    flag[i]++;
+                    // 推数据
+                    pushFlagData();
+                    selfClickList[i].classList.add("change");
+                    // 添加到喜欢
+                    likedData();
+                    pushLikedNumData();
+                    likedInit();
+                    // 添加到不喜欢
+                    for(let j=0;j<likedNum.length;j++){
+                        if(dislikeNum.indexOf(likedNum[j]) > -1){
+                            var index = dislikeNum.indexOf(likedNum[j]);
+                            dislikeNum.splice(index,1);
+                            pushDisLikeNumData();
+                        }
+                    }
+                    dislikeData();
+                    dislikeInit();
+                }else{
+                    flag[i] = 0;
+                    selfClickList[i].classList.remove("change");
+                    pushFlagData();
+                    // 添加到不喜欢
+                    dislikeData();
+                    pushDisLikeNumData();
+                    dislikeInit();
+                    // 添加到喜欢
+                    for(let j=0;j<dislikeNum.length;j++){
+                        if(likedNum.indexOf(dislikeNum[j]) > -1){
+                            var index = likedNum.indexOf(dislikeNum[j]);
+                            // console.log(likedNum,index);
+                            likedNum.splice(index,1);
+                            // console.log(likedNum);
+                            pushLikedNumData();
+                        }
+                    }
+                    likedData();
+                    likedInit();
+                }
+                window.location.href = "";
+            }
+        }
+        for(let i=0;i<times2.length;i++){
+            var dislikeChildList = document.querySelector(".dislike-number").children;
+            dislikeChildList[i].onclick = ()=>{
+                // console.log(i);
+                var click_item = Number(dislikeChildList[i].innerHTML); 
+                dislikeNum = JSON.parse(localStorage.getItem("dislikeNum"));
+                totalNum = JSON.parse(localStorage.getItem("totalNum"));
+                flag = JSON.parse(localStorage.getItem("flag"));
+                likedNum = JSON.parse(localStorage.getItem("likedNum"));
+                console.log(likedNum);
+                console.log(likedNum);
+                for(let j=0;j<totalNum.length;j++){
+                    // console.log(click_item);
+                    if(totalNum[j] == click_item){
+                        var index = dislikeNum.indexOf(click_item);
+                        var total_index = totalNum.indexOf(click_item);
+                        selfClickList[total_index].classList.add("change");
+                        // console.log(total_index);
+                        flag[total_index] = 1;
+                        dislikeNum.splice(index,1);
+                        // console.log(likedNum);
+                        likedNum[j] = totalNum[total_index];
+                        // console.log(dislikeNum);
+                        // console.log(likedNum);
+                        pushLikedNumData();
+                        pushFlagData();
+                        pushDisLikeNumData();
+                        dislikeData();
+                        dislikeInit();
+                        likedData();
+                        console.log(likedNum);
+                        likedInit();
+                    }
+                }
+                // console.log("nimei");
+                window.location.href = "";
+            }
+        }
+        for(let i=0;i<times1.length;i++){
+            var likedChildList = document.querySelector(".liked-number").children;
+            likedChildList[i].onclick = ()=>{
+                // console.log(i);
+                var click_item = Number(likedChildList[i].innerHTML); 
+                dislikeNum = JSON.parse(localStorage.getItem("dislikeNum"));
+                totalNum = JSON.parse(localStorage.getItem("totalNum"));
+                flag = JSON.parse(localStorage.getItem("flag"));
+                likedNum = JSON.parse(localStorage.getItem("likedNum"));
+                for(let j=0;j<totalNum.length;j++){
+                    // console.log(click_item);
+                    if(totalNum[j] == click_item){
+                        var index = likedNum.indexOf(click_item);
+                        var total_index = totalNum.indexOf(click_item);
+                        selfClickList[total_index].classList.remove("change");
+                        // console.log(total_index);
+                        flag[total_index] = 0;
+                        likedNum.splice(index,1);
+                        // console.log(likedNum);
+                        dislikeNum[j] = totalNum[total_index];
+                        // console.log(dislikeNum);
+                        // console.log(likedNum);
+                        pushLikedNumData();
+                        pushFlagData();
+                        pushDisLikeNumData();
+                        dislikeData();
+                        dislikeInit();
+                        likedData();
+                        console.log(likedNum);
+                        likedInit();
+                    }
+                }
+                // console.log("nimei");
+                window.location.href = "";
+            }
+        }
+        // 工具函数 - 已赞初始化
+        function likedInit(){
+            var dataList = JSON.parse(localStorage.getItem("likedNum"));
+            dataList = dataList.filter((_data)=>{
+                if(_data != null){
+                        return _data;
+                    }
+            })
+            if(dataList != null && dataList.length >0){
+                likedArea.innerHTML = "";
+                for(let i=0;i<dataList.length;i++){
+                    var likedNumber = document.createElement("div");
+                    likedArea.appendChild(likedNumber);
+                    likedArea.children[i].innerHTML = `${dataList[i]}`;
+                }
+            }
+            if(dataList != null && dataList.length == 0 ){
+                likedArea.innerHTML =`<div>暂无</div> `;
+            }
+        }
+        // 工具函数 - 未赞初始化
+        function dislikeInit(){
+            var dataList = JSON.parse(localStorage.getItem("dislikeNum"));
+            if(dataList != null && dataList.length > 0){
+                dislikeArea.innerHTML = "";
+                for(let i=0;i<dataList.length;i++){
+                    var dislikeNumber = document.createElement("div");
+                    dislikeArea.appendChild(dislikeNumber);
+                    dislikeArea.children[i].innerHTML = `${dataList[i]}`;
+                }
+            }
+            if(dataList != null && dataList.length == 0){
+                dislikeArea.innerHTML =`<div>暂无</div> `;
+            }
+        }
+        // 工具函数 - 已赞数据初始化
+        function likedData(){
+            var arr = JSON.parse(localStorage.getItem("flag"));
+            var num = JSON.parse(localStorage.getItem("totalNum"));
+            if(arr != null){
+                likedNum = [];
+                for(let i=0;i<arr.length;i++){
+                    if(arr[i]!=0&&arr[i]!=null){
+                        likedNum[i] = totalNum[i];
+                    }
+                }
+                likedNum = likedNum.filter((_data)=>{
+                    if(_data != null){
+                        return _data;
+                    }
+                })
+            }
+        }
+        // 工具函数 - 未赞数据初始化
+        function dislikeData(){
+            var arr = JSON.parse(localStorage.getItem("flag"));
+            var num = JSON.parse(localStorage.getItem("totalNum"));
+            if(arr != null){
+                dislikeNum = [];
+                for(let i=0;i<arr.length;i++){
+                    if(arr[i]==0){
+                        dislikeNum[i] = totalNum[i];
+                    }
+                }
+                dislikeNum = dislikeNum.filter((_data)=>{
+                    if(_data != null){
+                        return _data;
+                    }
+                });
+                // console.log(dislikeNum);
+            }
+        }
+        // 处理数据
+        function filterLikedData(){
+            var arr1 = JSON.parse(localStorage.getItem("likedNum"));
+            var time = 0;
+            var arr2 = JSON.parse(localStorage.getItem("flag"));
+            if(arr2 != null && arr1 != null){
+                for(let i=0;i<arr2.length;i++){
+                    if(arr2[i]==1){
+                        time++;
+                    }
+                }
+                if(time <= arr2.length){
+                    likedNum = arr1;
+                }
+            }
+        }
+        function filterFlagData(){
+            var time = 0;
+            var arr = JSON.parse(localStorage.getItem("flag"));
+            if(arr != null){
+                for(let i=0;i<arr.length;i++){
+                    if(arr[i]==0){
+                        time++;
+                    }
+                }
+                if(time!=arr.length){
+                    flag = arr;
+                }
+            }
+        }
+        // 工具函数 - 推数据
+        function pushTotalNumData(){
+            localStorage.setItem("totalNum",JSON.stringify(totalNum));
+        }
+        function pushLikedNumData(){
+            localStorage.setItem("likedNum",JSON.stringify(likedNum));
+        }
+        function pushFlagData(){
+            localStorage.setItem("flag",JSON.stringify(flag));
+        }
+        function pushDisLikeNumData(){
+            localStorage.setItem("dislikeNum",JSON.stringify(dislikeNum));
+        }
+        // 工具函数 - 页面初始化
+        function init(){
+            var wrap = document.createElement("div");
+            wrap.classList.add("wrap");
+
+            var container = document.createElement("div");
+            container.classList.add("container");
+
+            var aside = document.createElement("aside");
+            aside.classList.add("aside");
+
+            var liked = document.createElement("div");
+            liked.classList.add("liked");
+
+            var liked_title = document.createElement("div");
+            liked_title.classList.add("liked-title");
+            liked_title.innerHTML = "已赞";
+
+            var liked_number = document.createElement("div");
+            liked_number.classList.add("liked-number");
+            
+            var dislike = document.createElement("div");
+            dislike.classList.add("dislike");
+
+            var dislike_title = document.createElement("div");
+            dislike_title.classList.add("dislike-title");
+            dislike_title.innerHTML = "未赞";
+
+            var dislike_number = document.createElement("div");
+            dislike_number.classList.add("dislike-number");
+            
+            var text_area = document.createElement("div");
+            text_area.classList.add("text-area");
+
+            for(let i=0;i<data.length;i++){
+                var arr = JSON.parse(localStorage.getItem("flag"));
+                var text_item = document.createElement("div");
+                text_item.classList.add("text-item");
+
+                var text_content = document.createElement("div");
+                text_content.classList.add("text-content");
+                text_content.innerHTML  = `${data[i]}`;
+
+                var text_like = document.createElement("div");
+                text_like.classList.add("text-like");
+                if(arr != null){
+                    if(arr[i] != 0){
+                        text_like.classList.add("change");
+                    }
+                }
+                text_like.innerHTML = "点赞";
+
+                text_area.appendChild(text_item);
+                text_item.appendChild(text_content);
+                text_item.appendChild(text_like);
+                totalNum.push(i+1);
+            }
+
+            wrap.appendChild(container);
+            container.appendChild(aside);
+            aside.appendChild(liked);
+            liked.appendChild(liked_title);
+            liked.appendChild(liked_number);
+            aside.appendChild(dislike);
+            dislike.appendChild(dislike_title);
+            dislike.appendChild(dislike_number);
+            container.appendChild(text_area);
+            document.body.appendChild(wrap);
+        }
+    </script>
+</body>
+</html>

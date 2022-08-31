@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .wrap{
+            width: 1200px;
+            margin: 50px auto;
+            background-color:white;
+        }
+        .container{
+            padding: 0px 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .wrap-item{
+            padding-bottom: 20px;
+            display: flex;
+            width: 380px;
+        }
+        .left-area{
+            width: 133px;
+            height: 199px;
+            background-size: contain;
+        }
+        .right-area{
+            width: 200px;
+            padding: 5px 15px 0px;
+            /* text-align: center; */
+        }
+        .item-name{
+            padding-top: 5px;
+            width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 18px;
+        }
+        .item-desc{
+            padding: 10px 0;
+            font-size: 14px;
+            color: rgb(152, 152, 152);
+        }
+        .item-price{
+            display: flex;
+            padding-bottom: 10px;
+        }
+        .present-price{
+            font-size: 16px;
+            color: rgb(241, 67, 109);
+        }
+        .original-price{
+            font-size: 14px;
+            margin-left: 20px;
+            color: rgb(118, 116, 114);
+        }
+        .btn{
+            border: none;
+            padding: 5px 50px;
+            background-color: rgb(255, 0, 0);
+            border-radius: 5px;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        // 定义数据
+        var data = {
+            adrress:["./images/list1.jpg","./images/list2.jpg","./images/list3.jpg","./images/list4.jpg","./images/list5.jpg","./images/list6.jpg"],
+            name:["小米小爱蓝牙音箱随身版小米小爱蓝牙音箱随身版","贝医生0+防蛀健齿牙膏 10","小米路由器4C 白色","小米旅行箱 青春款 20英寸...","米家直流变频落地扇 白色","烟灶套装 (天然气)"],
+            desc:["小巧便携，一键唤醒小爱","强奸牙釉质，牙齿更坚固","小巧便携，一键唤醒小爱","环保材料，轻便重量","用科技创造自然风","点火排烟，风随火动",],
+            nowprice:["24.50元","1.00元","24.50元","199.00元","279.00元","1999.00元"],
+            preprice:["49元","12.9元","49元","249元","349元","2298元"],
+            num:[0,0,0,0,0,0],
+        };
+        // 获取缓存数据
+        if(getData()!=null){
+            list = getData();
+        }else{
+            // 顶一个商品数组
+            var list = [];
+        }
+        // console.log(list);
+        // 页面初始化
+        init();
+        // 选中页面按钮
+        var btnList = document.querySelectorAll(".btn");
+        // 打印选中元素
+        // console.log(btnList,data.num);
+        // 添加点击事件
+        for(let i=0;i<btnList.length;i++){
+            btnList[i].onclick = ()=>{
+                // console.log(i);
+                // 点击商品数量增加
+                data.num[i]++;
+                // 拼接一条商品信息 图片地址+商品名字+商品描述+原价+现价+数量
+                var mess = [];
+                mess.push(data.adrress[i]);
+                mess.push(data.name[i]);
+                mess.push(data.desc[i]);
+                mess.push(data.nowprice[i]);
+                mess.push(data.preprice[i]);
+                mess.push(data.num[i]);
+                // console.log(mess);
+                list[i] = mess;
+                // 存储到localstorage中
+                localStorage.setItem(`list`,JSON.stringify(list));
+            }
+        }
+        // 工具函数 - 获取缓存数据
+        function getData(){
+            var item = JSON.parse(localStorage.getItem("list"));
+            return item;
+        }
+        // 工具函数 - 页面初始化
+        function init(){
+            // 创建版心盒子
+            var wrap = document.createElement("div");
+            // 添加类名
+            wrap.classList.add("wrap");
+
+            // 创建版心容器
+            var container = document.createElement("div");
+            // 添加类名
+            container.classList.add("container");
+
+            for(let i=0;i<data.name.length;i++){
+                // 创建商品列表
+                var wrap_item = document.createElement("div");
+                // 添加类名
+                wrap_item.classList.add("wrap-item");
+
+                // 创建左侧区域
+                var left_area = document.createElement("div");
+                // add pictureAddress
+                left_area.style.backgroundImage = `url(${data.adrress[i]})`
+                // 添加类名
+                left_area.classList.add("left-area");
+
+                // 创建右侧区域
+                var right_area = document.createElement("div");
+                // Add classList
+                right_area.classList.add("right-area");
+
+                // create item-name
+                var item_name = document.createElement("div");
+                // Add classList
+                item_name.classList.add("item-name");
+                // insert text
+                item_name.innerHTML = `${data.name[i]}`;
+
+                // create item-desc
+                var item_desc = document.createElement("div");
+                // Add classList
+                item_desc.classList.add("item-desc");
+                // insert text 
+                item_desc.innerHTML = `${data.desc[i]}`;
+
+                // create item-price
+                var item_price = document.createElement("div");
+                // Add classList
+                item_price.classList.add("item-price");
+
+                // create present-price
+                var present_price = document.createElement("div");
+                // Add classList 
+                present_price.classList.add("present-price");
+                // insert text
+                present_price.innerHTML = `${data.nowprice[i]}`;
+
+                // create original-price 
+                var original_price = document.createElement("div");
+                // Add classList
+                original_price.classList.add("original-price");
+                // insert text
+                original_price.innerHTML = `<sub><del>${data.preprice[i]}</del></sub>`;
+
+                // create item-button
+                var item_button = document.createElement("div");
+                // Add classList
+                item_button.classList.add("item-button");
+
+                // create btn
+                var item_input = document.createElement("input");
+                // set att
+                item_input.setAttribute("type","button");
+                // add classList
+                item_input.classList.add("btn");
+                item_input.value = "立即购买";
+
+                // 生成到页面
+                container.appendChild(wrap_item);
+                wrap_item.appendChild(left_area);
+                wrap_item.appendChild(right_area);
+                right_area.appendChild(item_name);
+                right_area.appendChild(item_desc);
+                right_area.appendChild(item_price);
+                item_price.appendChild(present_price);
+                item_price.appendChild(original_price);
+                right_area.appendChild(item_button);
+                item_button.appendChild(item_input);
+            }
+            // 生成页面
+            document.body.appendChild(wrap);
+            wrap.appendChild(container);
+        }
+    </script>
+</body>
+</html>

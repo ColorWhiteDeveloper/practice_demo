@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .main{
+            width: 650px;
+            height: 433px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+        .wrap{
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+        .wrap-item{
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            float: left;
+            transition: all 1s linear;
+        }
+        /* .hastran{
+            transition: all 0.3s linear;
+        } */
+        .arrow{
+            display: block;
+            padding: 5px 20px; 
+            top: 210px;
+            background-color: deeppink;
+            border-radius: 15px;
+            position: absolute;
+            color: white;
+        }
+        .arrow-left{
+            left: 10px;
+        }
+        .arrow-right{
+            right: 10px;
+        }
+        .pages{
+            position: absolute;
+            display: flex;
+            top: 410px;
+            justify-content: center;
+            width: 650px;
+        }
+        .page-item{
+            width: 100px;
+            height: 5px;
+            background-color: black;
+            border-radius: 20px;
+            margin-left: 2px;
+        }
+        .page-change{
+            background-color: rgb(255, 153, 0);
+        }
+    </style>
+</head>
+<body>
+    <div class="main">
+        <div class="wrap"></div>
+        <span class="arrow arrow-left">左</span>
+        <span class="arrow arrow-right">右</span>
+        <div class="pages">
+            <div class="page-item page-change"></div>
+            <div class="page-item"></div>
+            <div class="page-item"></div>
+            <div class="page-item"></div>
+        </div>
+    </div>
+    <script>
+        // 定义图片地址数据源
+        var data = [
+        "../images/p1.jpg",
+        "../images/p2.jpg",
+        "../images/p3.jpg",
+        "../images/p4.jpg"
+        ];
+        var index = 0;
+        // 获取页面wrap元素
+        var wrap = document.querySelector(".wrap");
+        // 获取页面箭头元素
+        var arrowLeft = document.querySelector(".arrow-left");
+        var arrowRight = document.querySelector(".arrow-right");
+        // 选中页面分页器
+        var pageList = document.querySelectorAll(".page-item");
+        var lists = [];
+         // 页面初始化
+         init();
+        // 获取页面图片盒子
+        var pictureList = document.querySelectorAll(".wrap-item");
+        // 功能入口
+        // 右箭头功能
+        arrowRight.onclick = ()=>{
+            console.log("点击右移");
+            // 分页初始化
+            pageInit();
+            // 下一页
+            next();
+        }
+        // 左箭头功能
+        arrowLeft.onclick = ()=>{
+            console.log("点击左移");
+            // 分页初始化
+            pageInit();
+            // 上一页
+            pre();
+        }
+        // 分页
+        for(let i=0;i<pageList.length;i++){
+            pageList[i].onmouseover = ()=>{
+                // 分页初始化
+                pageInit();
+                pageList[i].classList.add("page-change");
+                index = i;
+                // item2中预存好要展示的图片
+                console.log(lists[2]);
+                lists[2].innerHTML = `<img src = "${data[index]}"></img>`;
+                // 整体左移动
+                for(let i=0;i<lists.length;i++){
+                    lists[i].style.marginLeft =  lists[i].offsetLeft - wrap.offsetWidth + "px";
+                }
+                // 删除都一个元素
+                var dropItem = lists.shift();
+                // 删除的元素添加至页面第一个
+                dropItem.style.marginLeft = (1) * wrap.offsetWidth + "px";
+                wrap.appendChild(dropItem);
+                lists.push(dropItem);
+            }
+        };
+        // 下一页
+        function pre(){
+            if(index == 0 ){
+                index = data.length-1;
+            }else{
+                index--;
+            }
+            console.log(index);
+            // 开始整体往右移动
+            for(let i=0;i<lists.length;i++){
+                // console.log(lists[i].offsetLeft);parseFloat(lists[i].style.marginLeft)
+                lists[i].style.marginLeft =  lists[i].offsetLeft + wrap.offsetWidth + "px";
+            }
+            // 删除数组最后一个元素
+            var dropItem = lists.pop();
+            // 删除的元素添加至页面第一个
+            dropItem.style.marginLeft = (-1) * wrap.offsetWidth + "px";
+            wrap.insertBefore(dropItem,wrap.children[0]);
+            lists.unshift(dropItem);
+            // if(index == -1){
+            //     console.log("fuck")
+            //     dropItem.innerHTML = `<img src = "${data[data.length-2]}"></img>`;
+            // }else if(index ==0){
+            //     dropItem.innerHTML = `<img src = "${data[data.length-1]}"></img>`;
+            // }else{
+            //     dropItem.innerHTML = `<img src = "${data[index-1]}"></img>`;
+            // }
+            if(index == 0){
+                dropItem.innerHTML = `<img src = "${data[data.length-1]}"></img>`;
+            }else{
+                dropItem.innerHTML = `<img src = "${data[index-1]}"></img>`;
+            }
+            pageList[index].classList.add("page-change");
+        }
+        // 下一页
+        function next(){
+            if(index == 3){
+                index = 0;
+            }else{
+                index++;
+            }
+            console.log(index);
+            // 开始整体往左移动
+            for(let i=0;i<lists.length;i++){
+                // console.log(lists[i].offsetLeft);parseFloat(lists[i].style.marginLeft)
+                lists[i].style.marginLeft =  lists[i].offsetLeft - wrap.offsetWidth + "px";
+            }
+            // 删除数组第一个元素
+            var dropItem = lists.shift();
+            // 删除的第一个元素添加至页面最后一个
+            dropItem.style.marginLeft = wrap.offsetWidth + "px";
+            wrap.appendChild(dropItem);
+            lists.push(dropItem);
+            if(index == 3){
+                dropItem.innerHTML = `<img src = "${data[0]}"></img>`;
+            }else{
+                dropItem.innerHTML = `<img src = "${data[index+1]}"></img>`;
+            }
+            pageList[index].classList.add("page-change");
+        }
+        // 分页初始化
+        function pageInit(){
+            for(let i=0;i<pageList.length;i++){
+                pageList[i].classList.remove("page-change");
+            }
+        }
+        // 页面初始化函数
+        function init(){
+            // 创建div盒子
+            var item_div1 = document.createElement("div");
+            item_div1.innerHTML = `<img src = "${data[data.length-1]}"></img>`;
+            item_div1.classList.add("wrap-item");
+            item_div1.classList.add("item0");
+            item_div1.style.marginLeft = (-1) * wrap.offsetWidth + "px";
+            wrap.appendChild(item_div1);
+            lists.push(item_div1);
+
+            var item_div2 = document.createElement("div");
+            item_div2.innerHTML = `<img src = "${data[index]}"></img>`;
+            item_div2.classList.add("wrap-item");
+            // item_div2.classList.add("hastran");
+            item_div2.classList.add("item1");
+            item_div2.style.marginLeft = (0) * wrap.offsetWidth + "px";
+            wrap.appendChild(item_div2);
+            lists.push(item_div2);
+
+            var item_div3 = document.createElement("div");
+            item_div3.innerHTML = `<img src = "${data[index+1]}"></img>`;
+            item_div3.classList.add("wrap-item");
+            item_div3.classList.add("item2");
+            // item_div3.classList.add("hastran");
+            item_div3.style.marginLeft = (1) * wrap.offsetWidth + "px";
+            wrap.appendChild(item_div3);
+            lists.push(item_div3);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <main></main>
+    <script>
+        /*  
+            1.准确描述DOM、DOMTree、Node、document根节点含义。
+                1）DOM：是一个用来帮助JavaScript管理、操作、控制html页面的规范
+                2）DOMTree：是由节点构成的树状结构
+                3）Node：在DOM规则范围内，通过API获取的页面元素
+                4）document根节点：代表页面本身
+            2.准确描述Document根节点通过属性获取页面节点（至少五个）
+                1）document.body
+                2）document.documentElement
+                3）document.head
+                4）document.title
+                5）document.forms
+            3.准确描述DOM中提供对Node的四个通用操作API，并能够具体写出实际案例
+                1）向指定元素节点内追加子节点
+                    var list_ul = document.createElement("ul");
+                    var list_li = document.createElement("li");
+                    var list_add_btn = document.createElement("button");
+                    list_add_btn.innerHTML="添加子节点";
+                    list_add_btn.onclick =  ()=>{
+                        list_ul.appendChild(list_li);
+                    }
+                    document.body.appendChild(list_ul);
+                    document.body.appendChild(list_add_btn);
+                2）克隆子节点
+                    var list_ul = document.createElement("ul");
+                    var list_li = document.createElement("li");
+                    var list_clone = list_li.cloneNode(false);
+                    var list_add_btn = document.createElement("button");
+                    list_add_btn.innerHTML="添加子节点";
+                    list_add_btn.onclick =  ()=>{
+                        list_ul.appendChild(list_li);
+                        list_ul.appendChild(list_clone);
+                    }
+                    document.body.appendChild(list_ul);
+                    document.body.appendChild(list_add_btn);
+                3）向指定元素节点内插入子节点
+                    var list_ul = document.createElement("ul");
+                    var list_li = document.createElement("li");
+                    var list_li2 = document.createElement("li");
+                    var list_node_text = document.createTextNode("节点1");
+                    var list_node_text2 = document.createTextNode("节点2");
+                    var list_clone = list_li.cloneNode(false);
+                    var list_add_btn = document.createElement("button");
+                    list_add_btn.innerHTML="添加子节点";
+                    list_add_btn.onclick =  ()=>{
+                        list_li2.appendChild(list_node_text2);
+                        list_ul.insertBefore(list_li2,list_ul.childNodes[0]);
+                        list_li.appendChild(list_node_text);
+                        list_ul.appendChild(list_li);
+                        list_clone.appendChild(document.createTextNode("复制节点1"));
+                        list_ul.appendChild(list_clone);
+                    }
+                    document.body.appendChild(list_ul);
+                    document.body.appendChild(list_add_btn);
+                4）从指定元素节点中删除子节点
+                    var list_ul = document.createElement("ul");
+                    var list_li = document.createElement("li");
+                    var list_add_btn = document.createElement("button");
+                    var list_node_text = document.createTextNode("节点1");
+                    list_add_btn.innerHTML="添加子节点";
+                    list_add_btn.onclick =  ()=>{
+                        list_ul.appendChild(list_li);
+                        list_li.appendChild(list_node_text);
+                    }
+                    list_add_btn.ondblclick =  ()=>{
+                        list_ul.removeChild(list_ul.childNodes[0]);
+                    }
+                    document.body.appendChild(list_ul);
+                    document.body.appendChild(list_add_btn);
+            4.准确描述如何获取页面可视区域宽高尺寸
+                console.log(document.documentElement.clientWidth);
+                console.log(document.documentElement.clientHeight);
+            5.准确描述DOM中提供对Node的选中API
+                1）
+                    a.document.querySelector(".class");
+                    b.document.querySelector("#id");
+                    c.document.querySelector("TagName");
+                    d.document.getElementById("");
+                    e.document.getElementByClassName("");
+                2）准确描述NodeList节点列表和HTMLCollection节点集合的区别；
+                    a.HTMLCollection 对象类似包含 HTML 元素的一个数组。
+                    b.节点列表不是一个数组
+            6.准确描述如何获取Node的类名列表
+                1）准确描述如何获取Node的类名列表
+                    document.querySelector(".class");
+                2）准确描述如何向Node的类名列表中添加类名
+                    document.querySelector(".class").classList.add("");
+                3）准确描述如何从Node的类名中删除类名
+                    document.querySelector(".class").classList.remove("");
+            7.准确描述DOM中对Node节点提供了哪些通用API
+                1）设置与修改元素的内容（至少两种、并说明区别）
+                    a.input: input.value="";
+                    b.除去input之外的: document.querySelector("").innerHTML ="";
+                    区别：
+                        a只能对input生效，b只能对除input之外的生效
+                2）设置与修改元素内容的样式（至少两种、并说明区别）
+                    a.document.queryselector("").style.cssText = "color:red";
+                    b.document.querySelector("").style.color = "red";
+                    区别：
+                        a可以直接当作写css那样来写，b要分别设置，需要多写；
+                3）设置与修改元素的属性
+                    document.querySelector("").serAttribute("");
+                4）元素父节点相关API
+                    a.获取元素所有子节点
+                        document.querySelector("").childNodes;
+                    b.获取元素第一个子节点
+                        document.querySelector("").firstChild;
+                    c.获取元素最后一个子节点
+                        document.querySelector("").lastChild;
+                    d.向父节点中最后一个子节点末尾追加节点
+                        document.querySelector("").appendChild();
+                    e.向父节点中第一个子节点之间插入节点
+                        document.querySelector("").insertBefore(newNode,document.querySelector("").childNodes[0]);
+                5）元素子节点相关API
+                    a.获取元素所有子节点
+                        document.querySelector("").childNodes;
+                    b.从父节点中移除当前节点
+                        document.querySelector("").removeChild(document.querySelector("").childNodes[0]);
+                    c.在当前节点前插入一个或多个同级节点
+                        document.querySelector("").before(newnode);
+                    d.在当前节点后插入一个或多个同级节点
+                        document.querySelector("").after(newnode);
+            8.准确描述DOM中对元素节点提供的通用API
+                1） 获取当前节点的父级节点（至少两种、并说明区别）
+                    a.document.querySelector("").ParentNode;
+                    b.docu,emt.querySelector("").ParentElement;
+                    区别：
+                        a获取父节点可能是文本节点，b是获取元素父节点
+                2）获取当前节点的所有自己节点
+                    document.querySelector("").childNodes;
+                3）获取当前节点前一个同级节点
+                    document.querySelector("").previousElementSibling;
+                4）获取当前节点后一个同级节点
+                    document.querySelector("").nextElementSibling;
+                5）获取当前节点的节点名称、节点类型
+                    console.log(document.querySelector(""),typeof document.querySelector(""));
+                    
+        */
+       console.log(document.body,typeof document.body);
+    </script>
+</body>
+</html>

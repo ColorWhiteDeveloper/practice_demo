@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .main-container{
+            position: relative;
+            width: 650px;
+            height: 433px;
+            margin: 20px auto;
+            overflow: hidden;
+        }
+        .mc-image{
+            display: flex;
+            /* margin-top: 20px; */
+            position: absolute;
+            width: 2600px;
+            height: 433px;
+        }
+        .mc-image>img{
+            float: left;
+        }
+        .circle{
+            display: flex;
+            position: absolute;
+            justify-content: center;
+            bottom: 10px;
+            width: 650px;
+            z-index: 1;
+        }
+        span{
+            width: 10px;
+            height: 10px;
+            margin-left: 15px;
+            background-color: white;
+            border-radius: 50%;
+        }
+        .arrow-area{
+            position: absolute;
+            width: 650px;
+            display: flex;
+            justify-content: space-between;
+            top: 200px;
+        }
+        .arrow-area>div{
+            padding: 10px 30px;
+            background-color: rgb(255, 0, 0);
+            border-radius: 15px;
+            color: white;
+        }
+        .change-color{
+            background-color: rgb(255, 153, 0);
+        }
+        .show-box{
+            width: 650px;
+            height: 433px;
+            position: absolute;
+            top: 0px;
+            background-color: rgba(0,0,0,0.3);
+        }
+        /* .animation-picture2{
+            animation: change2 5s linear;
+        }
+        .animation-picture1{
+            animation: change1 5s linear;
+        }
+        .animation-picture{
+            animation: change 5s linear;
+        }
+        @keyframes change{
+            0%{
+                opacity: 0;
+            }
+            25%{
+                opacity: 0.25;
+            }
+            50%{
+                opacity: 0.5;
+            }
+            75%{
+                opacity: 0.75;
+            }
+            100%{
+                opacity: 1;
+            }
+        }
+        @keyframes change1{
+            0%{
+                width: 650px;
+                opacity: 1;
+            }
+            25%{
+                width: 488px;
+                opacity: 0.75;
+            }
+            50%{
+                width: 325px;
+                opacity: 0.5;
+            }
+            75%{
+                width: 163px;
+                opacity: 0.25;
+            }
+            100%{
+                width: 0px;
+                opacity: 0;
+            }
+        }
+        @keyframes change2{
+            0%{
+                width: 0px;
+                opacity: 0;
+            }
+            25%{
+                width: 163px;
+                opacity: 0.25;
+            }
+            50%{
+                width: 325px;
+                opacity: 0.5;
+            }
+            75%{
+                width: 488px;
+                opacity: 0.75;
+            }
+            100%{
+                width: 650px;
+                opacity: 1;
+            } 
+            0%{
+                margin-left: 0px;
+                opacity: 0;
+            }
+            25%{
+                margin-left:163px;
+                opacity: 0.25;
+            }
+            50%{
+                margin-left: 325px;
+                opacity: 0.5;
+            }
+            75%{
+                margin-left: 488px;
+                opacity: 0.75;
+            }
+            100%{
+                margin-left: 650px;
+                opacity: 1;
+            }
+        } */
+    </style>
+</head>
+<body>
+    <main>
+        <div class="main-wrap">
+            <div class="main-container">
+                <!-- mc:main-container -->
+                <!-- 轮播图区域 -->
+                <div class="mc-image">
+                    <img src="../images/p1.jpg" alt="" id="1" class="lunbo">
+                    <img src="../images/p2.jpg" alt="" id="2" class="lunbo">
+                    <img src="../images/p3.jpg" alt="" id="3" class="lunbo">
+                    <img src="../images/p4.jpg" alt="" id="4" class="lunbo">
+                    <img src="../images/p1.jpg" alt="" id="1" class="lunbo">
+                </div>
+                <div class="show-box">
+                    <div class="arrow-area">
+                        <!-- 右箭头 -->
+                        <div class="arrow-left arrow">左</div>
+                        <!-- 左箭头 -->
+                        <div class="arrow-right arrow">右</div>
+                    </div>
+                    <!-- 底部小圆点 -->
+                    <div class="circle">
+                        <span class="change-color"></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+        var arrow_left = document.querySelector(".arrow-left");//获取页面左箭头元素
+        var arrow_right = document.querySelector(".arrow-right");//获取页面右箭头元素
+        var circle = document.querySelector(".circle");//获取页面小圆点区域
+        var circle_list = document.querySelectorAll(".circle>span");//获取小圆点
+        var picture_list = document.querySelector(".mc-image");//获取图片区域
+        var show_box = document.querySelector(".show-box");
+        show_box.style.left = picture_list.offsetLeft + "px";
+        show_box.style.top =picture_list.offsetTop + "px";
+        var time = 0;
+        // var timer = null;
+        arrow_right.onclick = ()=>{//右侧按钮入口
+            //初始化页面
+            init(picture_list);
+            circle_init(circle_list);
+            // clearInterval(timer);
+            // 获取下一张图片
+            time = reset(time,picture_list);//重置time
+            next_picture(time,picture_list,circle_list);
+            console.log(time);
+            time++; 
+        }
+        arrow_left.onclick = ()=>{//右侧按钮入口
+            //初始化页面
+            init(picture_list);
+            circle_init(circle_list);
+            // 获取下一张图片
+            time = reset_flag(time,picture_list);
+            pre_picture(time,picture_list,circle_list);
+            time--;
+            // clearInterval(timer);
+        }
+        for(let i=0;i<circle_list.length;i++){
+            circle_list[i].onmouseover = ()=>{
+                init(picture_list);
+                circle_init(circle_list);
+                var left_px;
+                var left_move = 0;
+                if(i==0){
+                    console.log(i);
+                    left_px = picture_list.children[1].offsetLeft;
+                    circle_list[0].classList.add("change-color");
+                    var timer = setInterval(() => {
+                        if(left_move==650){
+                            console.log("清楚定时器");
+                            clearInterval(timer);
+                        }else{
+                            left_move += 5;
+                            var res_px = left_move -left_px;
+                            picture_list.style.left = res_px + "px";
+                        }
+                    },1);
+                    setTimeout(() => {
+                        left_px =  picture_list.children[picture_list.children.length-1].offsetLeft;
+                        picture_list.style.left = "-" + left_px + "px";
+                    },1000);
+                }else{
+                    if(i==circle_list.length-1){
+                        console.log(i);
+                        left_px = picture_list.children[i+1].offsetLeft;
+                        circle_list[3].classList.add("change-color");
+                    }else{
+                        console.log(i);
+                        left_px =  picture_list.children[i+1].offsetLeft;
+                        circle_list[i].classList.add("change-color");
+                    }
+                    var timer = setInterval(() => {
+                        if(left_move==650){
+                            console.log("清楚定时器");
+                            clearInterval(timer);
+                        }else{
+                            left_move += 5;
+                            var res_px = left_move - left_px;
+                            picture_list.style.left = res_px + "px";
+                        }
+                    },1);
+                time = i;
+                }
+            }
+        }
+        //初始化小圆圈
+        function circle_init(_list){
+            for(let i=0;i<_list.length;i++){
+                _list[i].classList.remove("change-color");
+            }
+        }
+        //获取上一张图
+        function pre_picture(_flag,_list,_circleList){
+            if(_flag>0){
+                var left_move = 0;
+                var left_px = _list.children[_flag].offsetLeft;
+                if(_flag == _list.children.length-1){
+                    _list.style.left = "-" + left_px + "px";
+                }
+                var timer = setInterval(() => {
+                    if(left_move==650){
+                        console.log("清楚定时器");
+                        clearInterval(timer);
+                    }else{
+                        left_move += 5;
+                        var res_px = left_move - left_px;
+                        _list.style.left = res_px + "px";
+                    }
+                },1);
+            }
+            _circleList[_flag-1].classList.add("change-color");
+        }
+        //初始化页面
+        function init(_list){
+            for(let i=0;i<_list.children.length;i++){
+                _list.children[i].classList.remove("animation-picture");
+                _list.children[i].classList.remove("animation-picture1");
+                _list.children[i].classList.remove("animation-picture2");
+            }
+        }
+        function reset_flag(_flag,_list){
+            if(_flag==0){
+                _flag = 4;
+            }
+            return _flag;
+        }
+        //重置
+        function reset(_time,_list){
+            if(_time==_list.children.length-1){
+                _time = 0;
+            }
+            return _time;
+        }
+        // 获取下一张图片
+        function next_picture(_time,_list,_circleList){
+            // console.log(_time);
+            if(_time<_list.children.length-1){
+                var left_move = 0;
+                var left_px = _list.children[_time].offsetLeft;
+                var timer = setInterval(() => {
+                    if(left_move==650){
+                        console.log("清楚定时器");
+                        clearInterval(timer);
+                    }else{
+                        left_move += 5;
+                        var res_px = left_move + left_px;
+                        _list.style.left = "-" + res_px + "px";
+                    }
+                },1);
+            }
+            if(_time == _list.children.length-2){
+                _circleList[0].classList.add("change-color");
+            }else{
+                _circleList[_time+1].classList.add("change-color");
+            }
+        }
+    </script>
+</body>
+</html>

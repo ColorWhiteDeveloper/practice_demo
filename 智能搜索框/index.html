@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .wrap{
+            width: 500px;
+            margin: 0 auto;
+        }
+        .input-area{
+            width: 500px;
+        }
+        .my-input{
+            width: 444px;
+        }
+        .show-box{
+            border: 1px solid black;
+        }
+        label{
+            color: red;
+        }
+        span{
+            /* color: yellow; */
+            color: red;
+        }
+        .current1{
+            display: none;
+        }
+        .show-box>div{
+            border-bottom: 1px solid rgb(221, 221, 221);
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <div class="input-area">
+            <input type="text" class="my-input">
+            <input type="button" value="搜索">
+        </div>
+        <div class="show-box current1"></div>
+    </div>
+    <script>
+        var data_list =[
+            ["1张三是一个很好的人"],
+            ["2李四是一个很好的年轻人"],
+            ["1王五是一个很好的老实人"],
+            ["1文章是一个很好的嫖娼主义爱好   者"],
+            ["2彭茂是一个很好的隔壁老王"],
+            ["3张政是一个很好的打工人"],
+            ["8张教是一个很好的老师"],
+            ["4李院长是一个很好的老公"],
+            ["1洋葱是一个很好的坏人"],
+            ["3我不是一个很好的不是人"],
+        ];
+        var my_input = document.querySelector(".my-input");//选中页面输入框
+        var show_box = document.querySelector(".show-box");//选中页面显示框
+        my_input.oninput = ()=>{
+            //console.log(my_input.value);//打印一下是否获取到页面输入数据
+            var keywords = my_input.value;//keywords被赋予输入数据
+            init(show_box);//初始化页面
+            if(keywords==""){//判空操作
+                return;
+            }
+            keywords = keywords.trim();//keywords去掉首尾空白符
+            keywords = clear_between_space(keywords);//去除关键字之间的多余空格，只留下一个空格作为关键字符搜索
+            // console.log(keywords);//打印一下，keywords是否有值
+            var key_arr = keywords.split(" ");//用空格作为间断符
+            // console.log(key_arr);//去重前打印一下未修改的数据
+            key_arr = clear_repeat(key_arr);//关键字去重
+            console.log(key_arr);//打印以下修改之后的数据
+            key_arr = clear_between_repeat(key_arr);
+            var filter_data = my_filter(data_list);//处理一下data_list数据
+            // console.log(filter_data); //打印一下处理后的filter_data
+            var res_arr1 = search(key_arr,filter_data);//查找匹配的内容
+            var res_arr2 = search(key_arr,filter_data);//复制一份寻找到的结果
+            res_arr2 = changeArr(key_arr,res_arr1,res_arr2);//文字标红
+            render_data(res_arr2,show_box);//渲染数据到页面
+            // console.log(res_arr1,res_arr2)//打印一下查找到的结果
+        }
+        function clear_between_repeat(_keyArr){
+            var res_arr = [];
+            var final_arr = [];
+            var str = "";
+            // console.log(res_arr);
+            //_keyArr:["张三","三是"]
+            for(let i=0;i<_keyArr.length;i++){
+                for(let j=0;j<_keyArr[i].length;j++){
+                    if(res_arr.indexOf(_keyArr[i][j])==-1){
+                        res_arr.push(_keyArr[i][j]);
+                        if(j==_keyArr[i].length-1){
+                            res_arr.push("#");
+                        }
+                    }
+                }
+            }
+            for(let i=0;i<res_arr.length;i++){
+                if(res_arr[i]!="#"){
+                    str+=res_arr[i];
+                }else{
+                    final_arr.push(str);
+                    str="";
+                }
+            }
+            return final_arr;
+        }
+        function init(_item){
+            _item.innerHTML = "";
+            _item.classList.add("current1");
+        }
+        function render_data(_resArr2,_item){//渲染数据到页面
+            for(let i=0;i<_resArr2.length;i++){
+                var list_child = document.createElement("div");//生成一条查找的数据
+                list_child.innerHTML = _resArr2[i];
+                _item.appendChild(list_child);
+                _item.classList.remove("current1");
+            }
+        }
+        function changeArr(_keyArr,_resArr1,_resArr2){//给关键字所在的文字标红
+            for(let i=0;i<_resArr1.length;i++){
+                for(let j=0;j<_keyArr.length;j++){
+                    // var index = _resArr1[i].indexOf(_keyArr[j]);
+                    _resArr2[i] = _resArr2[i].split(_keyArr[j]);
+                    _resArr2[i] = _resArr2[i].join(`<span>${_keyArr[j]}</span>`)
+                }
+            }
+            return _resArr2;
+        }
+        // function IsNull(_keywords){//判空函数
+        //     if(_keywords==""){
+        //         return 0;
+        //     }
+        //     return 1;
+        // }
+        function search(_key_arr,_filter_data){//寻找包含_key_arr的_filter_data
+            var res_arr = [];
+            for(let j=0;j<_filter_data.length;j++){
+                var time = 0;
+                for(let i=0;i<_key_arr.length;i++){
+                    if(!_filter_data[j].includes(_key_arr[i])){
+                        break;
+                    }else{
+                        time++;
+                        if(time==_key_arr.length){
+                            res_arr.push(_filter_data[j]);
+                        }
+                    }
+                }
+            }
+            // console.log(res_arr);
+            return res_arr;
+        }
+        function my_filter(_data){//处理数据
+            var my_data = _data;
+            var res_arr = [];
+            for(let i=0;i<my_data.length;i++){
+                res_arr.push(my_data[i][0]);
+            }
+            return res_arr;
+        }
+        function clear_between_space(_keywords){//清除多余空格，只留下一个
+            var my_keywords = _keywords;//my_keywords接收_keywords
+            // console.log(my_keywords);//打印一下my_keywords是否有值
+            // console.log(my_keywords.indexOf("  "));//查看一下my_keywords是否存在连续的俩个空格;
+            for(let i=0;my_keywords.indexOf("  ")!=-1;i++){//中间第二个条件是循环终止条件，可以少用if，把终止条件放进去就行
+                my_keywords = my_keywords.replace("  "," ");//用一个空格取代俩个空格;
+            }
+            return my_keywords;//返回处理后的数据
+        }
+        function clear_repeat(_arr){//去除重复的关键字
+            var my_arr = _arr;//my_arr接收_arr;
+            var res_arr = [];//定义一个空数组接收处理后的数据
+            my_arr.filter((_newarr)=>{
+                return condition1(res_arr.indexOf(_newarr),res_arr,_newarr);//去除重复的关键字
+            });
+            return res_arr;//返回处理过后的数据值
+        }
+        // function condition2(_flag,_arr1){//如果包含存在，就返回当前数据，否则什么都不返回
+        //     if(_flag==true){
+        //         // _time++;
+        //         // var res_arr =[time,_arr1];
+        //         return _arr1;
+        //     }
+        //     return;
+        // }
+        function condition1(_item,_arr1,_arr2){//filter条件,_item判断值，_arr1要添加数据的数组，_arr2要被进数组的数据
+            if(_item==-1){//不存在相同的元素
+                _arr1.push(_arr2);//向数组_arr1z中添加_arr2
+            }
+            return _arr1;//返回添加_arr2后的数组
+        }
+    </script>
+</body>
+</html>
